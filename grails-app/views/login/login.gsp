@@ -1,38 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="layout" content="login"/>
+       <meta name="layout" content="login"/> 
         <title>Login</title>
-        <style type="text/css">
-            html{
-                min-height: 100%;
-                height: auto;
-                margin: 0 auto -50px;
-            }
-            body{
-                height: 100px;
-            }
-            #login{
-                margin: 0 auto;
-                width: 800px;
-                height: 500px;
-            }
-            #loginPic{
-                float: left;
-            }
-            #loginDialog{
-                width: 400px;
-                height: 300px;
-                float: right;
-                margin-top: 30px;
-                border: 1px solid black;
-                text-align: center;
-            }
-        </style>
     </head>
     <body>
         <div id="login">
-            <div id="loginDialog">
+            <div id="loginDialog" >
+             <h1 class="featuredarticle title"><span>Log</span> In</h1><br/>
+
                 <g:form action="login" method="post">
                     <div class="dialog">
                         <table>
@@ -57,6 +33,11 @@
                                     <div class="buttons">
                                         <input type="submit" value="Login"/>
                                     </div>
+                                </td>
+                            </tr>
+                            <tr class='prop'>
+                                <td colspan="3">
+                                    <g:link controller="user" action="register">Sign up now!</g:link>
                                 </td>
                             </tr>
                         </table>

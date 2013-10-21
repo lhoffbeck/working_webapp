@@ -91,6 +91,19 @@ log4j = {
 }
 
 /* custom stuff */
+grails {
+   mail {
+     host = "smtp.gmail.com"
+     port = 465
+     username = "ldwebportal@gmail.com"
+     password = "ldwebporta1"
+     props = ["mail.smtp.auth":"true",             
+              "mail.smtp.socketFactory.port":"465",
+              "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
+              "mail.smtp.socketFactory.fallback":"false"]
+   }
+}
+
 crowd {
   application.name= 'webportal'                                      
   application.password= '4787Campus'                                   
