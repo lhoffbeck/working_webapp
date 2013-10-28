@@ -13,22 +13,23 @@ class User {
     String confirm         // plain text, not stored
     String passwordHashed
     String district
+    String email
 
-    /*def userXML = """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-						<user name=\"${email}\" expand=\"attributes\">
-						  <first-name>${firstName}</first-name>
-						  <last-name>${lastName}</last-name>
-						  <display-name>${firstName} ${lastName}</display-name>
-						  <email>${email}</email>
-						  <active>true</active>
-						  <attributes>
-						    <link rel=\"self\" href=\"/user/attribute?username=${email}\"/>
-						  </attributes>
-						  <password>
-						    <link rel=\"edit\" href=\"/user/password?username=${email}\"/>
-						    <value>${password}</value>
-						  </password>
-						</user>"""*/
+    String userXML = """<?xml version='1.0' encoding='UTF-8'?>
+                        <user name='${email}' expand='attributes'>
+                          <first-name>${firstName}</first-name>
+                          <last-name>${lastName}</last-name>
+                          <display-name>${firstName} ${lastName}</display-name>
+                          <email>${email}</email>
+                          <active>true</active>
+                          <attributes>
+                            <link rel='self' href='/user/attribute?username=${email}'/>
+                          </attributes>
+                          <password>
+                            <link rel='edit' href='/user/password?username=${email}'/>
+                            <value>${password}</value>
+                          </password>
+                        </user>"""
  
  
     // transients
