@@ -20,7 +20,9 @@ class UserController {
 
             def dao = new CrowdDAO()
 
-            dao.createUser(u.userXML)
+            dao.sendPasswordResetEmail("testuser23@gmail.com")
+
+           // dao.createUser(u.userXML)
 
         	/*try{
         		sendMail {     
