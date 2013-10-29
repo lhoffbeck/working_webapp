@@ -18,7 +18,7 @@ class CrowdDAO {
 
 		HTTPBuilder builder = new HTTPBuilder( "http://crowd.timothywebster.net:8095/rest/usermanagement/latest/user/" )
 
-		builder.auth.basic "webportal","4787Campus"
+		builder.auth.basic appUser,appPas
 
     builder.request(POST, TEXT){
             

@@ -15,7 +15,7 @@ class User {
     String district
     String email
 
-    String userXML = """<?xml version='1.0' encoding='UTF-8'?>
+    String createUserXML = """<?xml version='1.0' encoding='UTF-8'?>
                         <user name='${email}' expand='attributes'>
                           <first-name>${firstName}</first-name>
                           <last-name>${lastName}</last-name>
