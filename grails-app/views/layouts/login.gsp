@@ -344,7 +344,7 @@
             </div>
          </div>
       </div>
-      <div id="footer">
+    <div id="footer">
       <g:render template="/common/footer" />
     </div> <!-- END #footer -->
    </body>

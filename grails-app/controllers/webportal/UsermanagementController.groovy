@@ -6,5 +6,7 @@ class UsermanagementController {
 
     def groupassignment(){
 
+    	CrowdDAO dao = new CrowdDAO()
+
     }
 }

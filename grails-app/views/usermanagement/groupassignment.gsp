@@ -4,6 +4,6 @@
         <title>Home</title>
     </head>
     <body>
-        Doin' shiiiiiiit.
+        
     </body>
 </html>
