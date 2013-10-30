@@ -181,6 +181,21 @@ class CrowdDAO {
             assert resp.status < 400
             
             println "request succeeded"
+
+             // Parse the response XML
+            def records = new XmlSlurper().parseText(groovy.xml.XmlUtil.serialize(xmlText))
+            def allRecords = records.group
+
+            // Get all of the users as user objects
+            def groupMap = []
+
+            int counter = 0
+
+            allRecords.each{
+              groupMap.add(it.@name)
+            }
+
+            return groupMap
         }
      
       response.failure = { resp ->
