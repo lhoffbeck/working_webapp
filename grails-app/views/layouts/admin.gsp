@@ -51,6 +51,7 @@
                 position: absolute;
                 top:125px;
                 width:100%;
+                margin: 5px;
         	}
         	body { margin:0px; }
         </style>
