@@ -9,8 +9,9 @@ class UsermanagementController {
     	def dao = new CrowdDAO()
 
     	def allPendingUsers = dao.getAllUsersInGroup("pending_approval")
-    	def groupList = dao.getAllGroups("Users")
+    	def groupList = dao.getAllGroups("Schools")
+    	print groupList
 
-    	return [userList:allPendingUsers, groupList:["school a","school b","school c","school d","school e"]]
+    	return [userList:allPendingUsers, groupList:groupList]
     }
 }
