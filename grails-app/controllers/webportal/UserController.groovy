@@ -11,71 +11,41 @@ import org.apache.http.impl.client.DefaultHttpRequestRetryHandler
 class UserController {
  
     def register = {
+
         // new user posts his registration details
         if (request.method == 'POST') {
-
 
         	// create domain object and assign parameters using data binding
             def u = new User(params)
 
             def dao = new CrowdDAO()
 
-            dao.sendPasswordResetEmail("testuser23@gmail.com")
+            // Check if the username already exists in Crowd. If not, create the user. If so, render back acceptable usernames for the user to pick from.
+            if(!dao.getUser(u.username)){
+                assert dao.createUser(u) == true
+                assert dao.addToDefaultGroup(u.username) == true
+               /*try{
+                    sendMail {     
+                      to "ldwebportal@gmail.com"    
+                      subject "You have pending user accounts to confirm"     
+                      body "Account creation request from ${u.firstName} ${u.lastName}. Please follow the following link to confirm the group membership: "
+                    }
+                    println "email sent"
+                }catch(Exception ex){ throw ex }*/
+                redirect(controller:'login')
+            }else{
 
-           // dao.createUser(u.userXML)
-
-        	/*try{
-        		sendMail {     
-				  to "ldwebportal@gmail.com"    
-				  subject "Account creation request from ${u.firstName} ${u.lastName}"     
-				  body "${u.firstName} ${u.lastName} requested a web portal account. Please follow the following link to confirm: "
-				}
-				println "email sent"
-			}catch(Exception ex){ throw ex }*/
-
-        	/*
-
-
-            // create domain object and assign parameters using data binding
-            def u = new User(params)
-            u.passwordHashed = u.password.encodeAsPassword()
-            if (! u.save()) {
-                // validation failed, render registration page again
-                return [user:u]
-            } else {
-                // validate/save ok, store user in session, redirect to homepage
-                session.user = u
-                redirect(controller:'main')
+                //TODO: return usernames that the user can pick from
+                throw new RuntimeException("username already exists")
             }
 
-            */
 
-        } else if (session.user) {
+
+        	
+
+        } /*else if (session.user) {
             // don't allow registration while user is logged in
             redirect(controller:'main')
-        } 
-    }
- 
-    def login = {
-        if (request.method == 'POST') {
-            def passwordHashed = params.password.encodeAsPassword()
-            def u = User.findByUsernameAndPasswordHashed(params.username, passwordHashed)
-            if (u) {
-                // username and password match -> log in
-                session.user = u
-                redirect(controller:'main')
-            } else {
-                flash.message = "User not found"
-                redirect(controller:'main')
-            }
-        } else if (session.user) {
-            // don't allow login while user is logged in
-            redirect(controller:'main')
-        }
-    }
- 
-    def logout = {
-        session.invalidate()
-        redirect(controller:'logout')
+        } */
     }
 }
