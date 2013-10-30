@@ -4,6 +4,6 @@
         <title>Home</title>
     </head>
     <body>
-    This is a user management page with lotsa user management functions.
+    	Click a link to get started
     </body>
 </html>

@@ -4,6 +4,10 @@
         <title>Home</title>
     </head>
     <body>
+        <h1>Users pending group approval</h1>
+        <p>Assign each user to a district to complete their sign up process.</p>
+        <br/>
+        <hr/>
         <g:each in="${userList}" var="user">
         	<p>
         	<em>User:</em> ${user.getValue().displayName}<br/>
