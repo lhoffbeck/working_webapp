@@ -8,12 +8,13 @@ class User {
     // properties
     String firstName
     String lastName
-    String username			// this little bastard isn't used, but not having it in blows everything to hell so it's staying in for now.
+    String username			
     String password        // plain text, not stored
     String confirm         // plain text, not stored
     String passwordHashed
     String district
     String email 
+    String displayName
  
     // transients
     //static transients = ['password', 'confirm']

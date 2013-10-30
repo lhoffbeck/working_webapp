@@ -7,6 +7,7 @@ import static groovyx.net.http.Method.POST
 import static groovyx.net.http.Method.GET
 import groovy.xml.*
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler
+import groovy.util.XmlSlurper
 
 class CrowdDAO {
 
@@ -47,6 +48,8 @@ class CrowdDAO {
           
           println "request succeeded"
 
+          addUserAttribute([district:u.district], u.username)
+
           return true
       }
            
@@ -58,6 +61,42 @@ class CrowdDAO {
       }
     }
 	}
+
+  def addUserAttribute(Map attributes, username){
+
+    String xml = "<?xml version='1.0' encoding='UTF-8'?><attributes>"
+
+    attributes.each{ attName, value -> xml += "<attribute name='${attName}'><values><value>${value}</value></values></attribute>" }
+    xml += "</attributes>"
+
+    println "+"*20 + xml
+
+
+    HTTPBuilder builder = new HTTPBuilder( "${baseURL}/user/attribute?username=${username}" )
+
+    builder.auth.basic appUser,appPas
+
+    builder.request(POST, XML){
+          
+      body = xml
+                   
+      response.success = { resp, xmlText -> 
+
+          assert resp.status == 204
+          
+          println "add attribute succeeded"
+
+          return true
+      }
+           
+      response.failure = { resp ->
+          println 'request failed: ' + resp.status
+          assert resp.status >= 400
+
+          return false
+      }
+    }
+  }
 
   def addToDefaultGroup(username){
 
@@ -90,19 +129,36 @@ class CrowdDAO {
 
   }
 
-  def getAllUsers(){
+  def getAllUsersInGroup(groupname){
 
-    def requester = new HTTPBuilder("${baseURL}/search?entity-type=user")
+    def builder = new HTTPBuilder("${baseURL}/group/user/direct?groupname=${groupname}")
     builder.auth.basic appUser,appPas
 
-    requester.request(GET) { req ->
+    builder.request(GET) { req ->
 
       response.success = { resp, xmlText -> 
             
-            println resp.dump()
             assert resp.status < 400
-            
             println "request succeeded"
+
+
+            // Parse the response XML
+            def records = new XmlSlurper().parseText(groovy.xml.XmlUtil.serialize(xmlText))
+            def allRecords = records.user
+
+            // Get all of the users as user objects
+            def userMap = [:]
+
+            int counter = 0
+
+            allRecords.each{
+              def userName = it.@name
+              def user = getUser(userName)
+              userMap.put(userName,user)
+            }//-------------------------------------
+
+            return userMap
+            
         }
      
       response.failure = { resp ->
@@ -113,23 +169,55 @@ class CrowdDAO {
 
   }
 
+  def getAllGroups(groupname){
 
-    /*
+    def builder = new HTTPBuilder("${baseURL}/group/child-group/direct?groupname=${groupname}")
+    builder.auth.basic appUser,appPas
+
+    builder.request(GET) { req ->
+
+      response.success = { resp, xmlText -> 
+            
+            assert resp.status < 400
+            
+            println "request succeeded"
+        }
+     
+      response.failure = { resp ->
+        println 'request failed: ' + resp.status
+        assert resp.status >= 400
+      }
+    }
+  }
+
+   /*
      *  retrieves information for a single user.
      */
   def getUser(username){
 
-    def requester = new HTTPBuilder("${baseURL}/user?username=${username}")
+    def builder = new HTTPBuilder("${baseURL}/user?username=${username}&expand=attributes")
     builder.auth.basic appUser,appPas
 
-    requester.request(GET) { req ->
+    builder.request(GET) { req ->
 
       response.success = { resp, xmlText -> 
             
-            println resp.dump()
-            assert resp.status < 400
-            
             println "request succeeded"
+            assert resp.status < 400
+
+            def userRecord = new XmlSlurper().parseText(groovy.xml.XmlUtil.serialize(xmlText).replaceAll('..xml version="1.0" encoding="UTF-8"..',""))
+            //println groovy.xml.XmlUtil.serialize(xmlText).replaceAll('..xml version="1.0" encoding="UTF-8"..',"")
+
+            def user = new User()
+
+            user.firstName = userRecord."first-name"
+            user.lastName = userRecord."last-name"
+            user.displayName = userRecord."display-name"
+            user.username = userRecord.@name
+            userRecord.attributes.attribute.each{ if( it.@name == "district") user.district = it.values }
+            user.email = userRecord.email
+            
+            return user
         }
      
       response.failure = { resp ->
@@ -143,16 +231,39 @@ class CrowdDAO {
   }
 
 
+  def getAllUsers(){
+
+    def builder = new HTTPBuilder("${baseURL}/search?entity-type=user")
+    builder.auth.basic appUser,appPas
+
+    builder.request(GET) { req ->
+
+      response.success = { resp, xmlText -> 
+            
+            println resp.dump()
+            assert resp.status < 400
+            
+            println "request succeeded"
+        }
+     
+      response.failure = { resp ->
+        println 'request failed: ' + resp.status
+        assert resp.status >= 400
+      }
+    }
+
+  }
+
     /*
     *   Gets user attributes for a single user.
     */
 
   def getUserAttributes(username){
 
-    def requester = new HTTPBuilder("${baseURL}/user/attribute?username=${username}")
+    def builder = new HTTPBuilder("${baseURL}/user/attribute?username=${username}")
     builder.auth.basic appUser,appPas
 
-    requester.request(GET) { req ->
+    builder.request(GET) { req ->
 
       response.success = { resp, xmlText -> 
             
@@ -175,10 +286,10 @@ class CrowdDAO {
     */
    def sendPasswordResetEmail(username){
 
-    def requester = new HTTPBuilder("${baseURL}/user/mail/password?username=${username}")
+    def builder = new HTTPBuilder("${baseURL}/user/mail/password?username=${username}")
     builder.auth.basic appUser,appPas
 
-    requester.request(POST) { req ->
+    builder.request(POST) { req ->
 
       response.success = { resp, xmlText -> 
             

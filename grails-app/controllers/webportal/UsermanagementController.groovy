@@ -6,7 +6,11 @@ class UsermanagementController {
 
     def groupassignment(){
 
-    	CrowdDAO dao = new CrowdDAO()
+    	def dao = new CrowdDAO()
 
+    	def allPendingUsers = dao.getAllUsersInGroup("pending_approval")
+    	def groupList = dao.getAllGroups("Users")
+
+    	return [userList:allPendingUsers, groupList:["school a","school b","school c","school d","school e"]]
     }
 }
