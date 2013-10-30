@@ -10,7 +10,6 @@ class UsermanagementController {
 
     	def allPendingUsers = dao.getAllUsersInGroup("pending_approval")
     	def groupList = dao.getAllGroups("Schools")
-    	print groupList
 
     	return [userList:allPendingUsers, groupList:groupList]
     }

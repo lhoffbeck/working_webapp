@@ -92,12 +92,14 @@
                  margin: 0px 386.5px;
                  display: none;
              }
+             #mainNav ul ul{
+                display: none;
+             }
+             #mainNav ul li:hover > ul{
+                display: block;
+             }
 
          </style>
-
-        <script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
-        <script type="text/javascript">
-        </script>
 
 
 
@@ -109,17 +111,17 @@
                      <div id="greenNav">
                          <div id="innerBackNav">
                              <div id="mainNav">
-                                 <div id="logo">
-                                     <img src="/webportal/static/images/logo.png" />
-                                 </div>
-                                 <ul class="topnav">
-                                     <li id="userManagement">
-                                         <a href="/webportal/usermanagement/index" style="color:white;"> USER MANAGEMENT</a>
-                                         <ul class="subnav">
-                                            <li><g:link controller="usermanagement" action="groupassignment">Pending Users</g:link></li>
-                                        </ul>
-                                     </li>
-                                 </ul>
+                                <div id="logo">
+                                    <img src="/webportal/static/images/logo.png" />
+                                </div>
+                                <ul class="topnav">
+                                    <li id="userManagement">
+                                        <a href="/webportal/usermanagement/index" style="color:white;"> USER MANAGEMENT</a>
+                                        <ul class="subnav">
+                                           <li><g:link controller="usermanagement" action="groupassignment">Pending Users</g:link></li>
+                                       </ul>
+                                    </li>
+                                </ul>
                              </div>
                          </div>
                      </div>

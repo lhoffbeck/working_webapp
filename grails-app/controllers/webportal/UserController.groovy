@@ -24,14 +24,16 @@ class UserController {
             if(!dao.getUser(u.username)){
                 assert dao.createUser(u) == true
                 assert dao.addToDefaultGroup(u.username) == true
-               /*try{
+               
+               try{
                     sendMail {     
                       to "ldwebportal@gmail.com"    
                       subject "You have pending user accounts to confirm"     
-                      body "Account creation request from ${u.firstName} ${u.lastName}. Please follow the following link to confirm the group membership: "
+                      body "Account creation request from ${u.firstName} ${u.lastName}. Please log in to confirm group membership."
                     }
                     println "email sent"
-                }catch(Exception ex){ throw ex }*/
+                }catch(Exception ex){ throw ex }
+
                 redirect(controller:'login')
             }else{
 
