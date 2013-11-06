@@ -35,10 +35,6 @@ class UserController {
                 }catch(Exception ex){ throw ex }
 
                 redirect(controller:'login')
-            }else{
-
-                //TODO: return usernames that the user can pick from
-                throw new RuntimeException("username already exists")
             }
 
 

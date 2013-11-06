@@ -98,6 +98,12 @@
              #mainNav ul li:hover > ul{
                 display: block;
              }
+             .subnav{
+                display: block;
+             }
+             .topnav{
+                display: inline-block;
+             }
 
          </style>
 
@@ -118,6 +124,7 @@
                                     <li id="userManagement">
                                         <a href="/webportal/usermanagement/index" style="color:white;"> USER MANAGEMENT</a>
                                         <ul class="subnav">
+                                           <li><g:link controller="usermanagement" action="adduser">Add a User</g:link></li>
                                            <li><g:link controller="usermanagement" action="groupassignment">Pending Users</g:link></li>
                                        </ul>
                                     </li>
