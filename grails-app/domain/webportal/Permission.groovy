@@ -1,9 +1,15 @@
 package webportal
 
 class Permission {
-
+	
+    static hasMany = [pendingusers: PendingUser]
 	static belongsTo = PendingUser
-    static hasMany = [pendingUsers:PendingUser]
+
+	public Permission(){}
+
+	public Permission(permName){
+		this.permName = permName
+	}
 
     String permName
 

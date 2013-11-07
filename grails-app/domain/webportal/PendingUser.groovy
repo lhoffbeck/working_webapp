@@ -2,7 +2,14 @@ package webportal
 
 class PendingUser {
 
-	static hasMany = [perms:Permission]
+	static hasMany = [permissions: Permission]
+
+	public PendingUser(){}
+
+	public PendingUser(email, district){
+		this.email = email
+		this.district = district
+	}
 
 	String email
 	String token 

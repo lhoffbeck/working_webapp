@@ -20,19 +20,20 @@ class UsermanagementController {
     	// if this is the form submit
     	if (request.method == 'POST') {
 
-
-
     		// save user to database
-    		/*def pendUser = new PendingUser(params)
+    		def pendUser = new PendingUser(params.email, params.district)
             pendUser.setToken()
 
+            // add each permission to the pending user
+            params.each{ key, value ->
+                //if(key ==~ /perm[0-9]+/) pendUser.addToPermissions(new Permission(key))
+            }
 
+            pendUser.addToPermissions(new Permission("mah perms")).save(failOnError: true)
 
-            pendUser.save(failOnError: true)
+            System.err.println(PendingUser.count() + "!"*30)
 
-            System.err.println(PendingUser.count() + "!"*30)*/
-
-    		println params.dump()
+    		//println params.dump()
 
     	} 
 
