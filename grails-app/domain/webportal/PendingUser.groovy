@@ -2,15 +2,17 @@ package webportal
 
 class PendingUser {
 
+	static hasMany = [perms:Permission]
+
 	String email
 	String token 
 	String district
+	def salt = "3kDj6(6woi3@1w"
 
-	def perm1
-	def perm2
-	def perm3
-
-	
+	def void setToken(){
+		def saltyEmail = email + salt
+		token = saltyEmail.hashCode()
+	}
 
 
     static constraints = {

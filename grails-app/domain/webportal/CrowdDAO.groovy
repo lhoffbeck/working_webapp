@@ -11,6 +11,8 @@ import groovy.util.XmlSlurper
 
 class CrowdDAO {
 
+  static mapWith = "none"
+
 	private final def appUser = "webportal"
 	private final def appPas = "4787Campus"
   private final def baseURL = "http://crowd.timothywebster.net:8095/crowd/rest/usermanagement/latest"

@@ -1,6 +1,9 @@
 package webportal
 
 class User {
+
+    static mapWith = "none"
+
     // time stamps: automatically populated by GORM
     Date dateCreated
     Date lastUpdated
@@ -26,8 +29,8 @@ class User {
         district  blank:false;
         username  blank:false, size:5..22, matches:/[\S]+/, unique:true
         password  blank:false, size:5..15, matches:/[\S]+/, validator:{ val, obj ->
-            if (obj.password != obj.confirm)
-                return 'user.password.dontmatch'
+        if (obj.password != obj.confirm)
+            return 'user.password.dontmatch'
         }
     }
 }

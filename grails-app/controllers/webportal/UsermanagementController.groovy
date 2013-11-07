@@ -20,10 +20,19 @@ class UsermanagementController {
     	// if this is the form submit
     	if (request.method == 'POST') {
 
-    		// save user to database
-    		new PendingUser(params).save(failOnError: true)
 
-    		//println params.dump()
+
+    		// save user to database
+    		/*def pendUser = new PendingUser(params)
+            pendUser.setToken()
+
+
+
+            pendUser.save(failOnError: true)
+
+            System.err.println(PendingUser.count() + "!"*30)*/
+
+    		println params.dump()
 
     	} 
 
