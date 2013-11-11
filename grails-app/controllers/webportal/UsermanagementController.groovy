@@ -21,17 +21,7 @@ class UsermanagementController {
     	if (request.method == 'POST') {
 
     		// save user to database
-    		def pendUser = new PendingUser(params.email, params.district)
-            pendUser.setToken()
-
-            // add each permission to the pending user
-            params.each{ key, value ->
-                //if(key ==~ /perm[0-9]+/) pendUser.addToPermissions(new Permission(key))
-            }
-
-            pendUser.addToPermissions(new Permission("mah perms")).save(failOnError: true)
-
-            System.err.println(PendingUser.count() + "!"*30)
+    		new PendingUser(params).save(failOnError: true)
 
     		//println params.dump()
 
@@ -43,5 +33,26 @@ class UsermanagementController {
 
 	    return [groupList:groupList, permList:permList]
     	
+    }
+
+    def edituser(){
+
+        if (request.method == 'POST') {
+
+            // save user to database
+            new PendingUser(params).save(failOnError: true)
+
+            //println params.dump()
+
+        } 
+
+        def dao = new CrowdDAO()
+        def groupList = dao.getAllGroups("Schools")
+        def permList = dao.getAllGroups("Permissions")
+        
+        def userList = dao.getAllUsersInNestedGroup("Schools")
+        print userList.get("ppsUser1").firstName
+
+        return[userList:userList,groupList:groupList, permList:permList]
     }
 }
