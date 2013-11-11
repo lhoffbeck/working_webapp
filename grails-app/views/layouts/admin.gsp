@@ -1,6 +1,8 @@
 <html>
      <head>
          <title>Home</title>
+         <q:javascript library='jquery' />
+         <r:layoutResources/>
          <style type="text/css">
 
              #topbar{
@@ -125,7 +127,7 @@
                                         <a href="/webportal/usermanagement/index" style="color:white;"> USER MANAGEMENT</a>
                                         <ul class="subnav">
                                            <li><g:link controller="usermanagement" action="adduser">Add a User</g:link></li>
-                                           <li><g:link controller="usermanagement" action="groupassignment">Pending Users</g:link></li>
+                                           <li><g:link controller="usermanagement" action="edituser">Pending Users</g:link></li>
                                        </ul>
                                     </li>
                                 </ul>
