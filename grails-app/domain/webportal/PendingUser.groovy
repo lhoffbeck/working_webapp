@@ -14,7 +14,7 @@ class PendingUser {
 	String email
 	String token 
 	String district
-	def salt = "3kDj6(6woi3@1w"
+	def salt = "3kDj6(6woi3@1w" // random as they come
 
 	def void setToken(){
 		def saltyEmail = email + salt

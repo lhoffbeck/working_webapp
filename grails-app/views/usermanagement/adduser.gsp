@@ -29,15 +29,15 @@
 			<table>
 				<tr>
 					<td>Information:</td>
-					<td><g:checkBox name="perm1" value="${PendingUser?.perm1}"/></td>
+					<td><g:checkBox name="perm_information"/></td>
 				</tr>
 				<tr>
 					<td>Reports:</td>
-					<td><g:checkBox name="perm2" value="${PendingUser?.perm2}"/></td>
+					<td><g:checkBox name="perm_report"/></td>
 				</tr>
 				<tr>
-					<td>Special Sauce:</td>
-					<td><g:checkBox name="perm3" value="${PendingUser?.perm3}"/></td>
+					<td>Admin:</td>
+					<td><g:checkBox name="perm_admin"/></td>
 				</tr>
 			</table>
 

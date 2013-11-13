@@ -238,7 +238,7 @@ class CrowdDAO {
         }
      
       response.failure = { resp ->
-        println 'request failed: ' + resp.status
+        println 'user ${username} does not currently exist in crowd'
         assert resp.status >= 400
 
         return null

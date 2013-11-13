@@ -2,7 +2,7 @@ package webportal
 
 class UsermanagementController {
 
-    def index() { }
+    def index(){ }
 
     def groupassignment(){
 
@@ -26,17 +26,16 @@ class UsermanagementController {
 
             // add each permission to the pending user
             params.each{ key, value ->
-                //if(key ==~ /perm[0-9]+/) pendUser.addToPermissions(new Permission(key))
+                if(key ==~ /perm.*/ && value == 'on'){
+                    pendUser.addToPermissions(new Permission(key.replace("perm_","")))
+                }
             }
 
-            pendUser.addToPermissions(new Permission("mah perms")).save(failOnError: true)
-
-            System.err.println(PendingUser.count() + "!"*30)
-
-    		//println params.dump()
+            pendUser.save(failOnError: true)
 
     	} 
 
+        // get the information needed to repopulate the list.
 	    def dao = new CrowdDAO()
 	    def groupList = dao.getAllGroups("Schools")
 	    def permList = dao.getAllGroups("Permissions")

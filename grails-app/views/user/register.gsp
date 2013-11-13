@@ -56,11 +56,19 @@
           <g:passwordField name="confirm"
             class="${hasErrors(bean:user,field:'password','errors')} input"  style="width: 200px;"/>
         </div>
-        <label for="district">School District:</label>
-        <div class="rightcol">
-          <g:textField name="district" value="${user?.district}"
-            class="${hasErrors(bean:user,field:'district','errors')} input" style="width: 200px;"/>
-        </div>
+
+        <!-- If the user was redirected from his/her email, the url will have the token. else, they can sign up and get put into a pending users group. -->
+        <g:if test="${!params.containsKey('tkn')}"> <!-- no token in URL -->
+          <label for="token">Token</label>
+          <div class="rightcol">
+            <g:textField name="token"
+              class="${hasErrors(bean:user,field:'token','errors')} input"  style="width: 200px;"/>
+          </div>
+        </g:if>
+        <g:else> <!-- token in url -->
+          <g:hiddenField name="tkn" class="${hasErrors(bean:user,field:'token','errors')}" value="${params.tkn}"/>
+        </g:else> 
+
           <label>&nbsp;</label>
         <div class="rightcol">
           <g:submitButton class="button" name="submitButton" value="Create Account" />
