@@ -2,15 +2,22 @@
     <head>
         <meta name="layout" content="admin"/> 
         <title>Home</title>
+        <style>
+        	
+        </style>
     </head>
     <body>
-
-    	<g:hasErrors bean="${user}">
+		<g:if test="${ flash.message }" >
+	        <div id="hello">${ flash.message }</div>
+	    </g:if>
+    	<g:hasErrors bean="${pendingUser}">
 	        <div class="errors">
-	          <g:renderErrors bean="${PendingUser}"/>
+	          <g:renderErrors bean="${pendingUser}"/>
 	        </div>
       	</g:hasErrors>
     	
+      	<br/>
+      	<br/>
 
     	<g:form url="[controller:'usermanagement', action:'adduser']">
 	        <label for="email">Email:</label>

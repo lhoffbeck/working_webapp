@@ -154,7 +154,47 @@ class CrowdDAO {
             int counter = 0
 
             allRecords.each{
-              def userName = it.@name
+              String userName = it.@name
+              def user = getUser(userName)
+              userMap.put(userName,user)
+            }//-------------------------------------
+
+            return userMap
+            
+        }
+     
+      response.failure = { resp ->
+        println 'request failed: ' + resp.status
+        assert resp.status >= 400
+      }
+    }
+
+  }
+
+  def getAllUsersInNestedGroup(groupname){
+
+    def builder = new HTTPBuilder("${baseURL}/group/user/nested?groupname=${groupname}")
+    builder.auth.basic appUser,appPas
+
+    builder.request(GET) { req ->
+
+      response.success = { resp, xmlText -> 
+            
+            assert resp.status < 400
+            println "request succeeded"
+
+
+            // Parse the response XML
+            def records = new XmlSlurper().parseText(groovy.xml.XmlUtil.serialize(xmlText))
+            def allRecords = records.user
+
+            // Get all of the users as user objects
+            def userMap = [:]
+
+            int counter = 0
+
+            allRecords.each{
+              String userName = it.@name
               def user = getUser(userName)
               userMap.put(userName,user)
             }//-------------------------------------
@@ -238,7 +278,7 @@ class CrowdDAO {
         }
      
       response.failure = { resp ->
-        println 'user ${username} does not currently exist in crowd'
+        println "user ${username} does not currently exist in crowd"
         assert resp.status >= 400
 
         return null

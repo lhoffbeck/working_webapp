@@ -1,7 +1,15 @@
 <html>
      <head>
          <title>Home</title>
+         <q:javascript library='jquery' />
+         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+         <script src="${resource(dir:'js',file:'dropit.js')}"></script>
+         <link rel="stylesheet" href="${resource(dir:'css',file:'dropit.css')}" />
+         <r:layoutResources/>
          <style type="text/css">
+             #hello{
+                    background-color: #66A366;
+                }
 
              #topbar{
                  position: absolute;
@@ -106,9 +114,11 @@
              }
 
          </style>
-
-
-
+         <script type="text/javascript">
+            $(document).ready(function() {
+                $('.menu').dropit();
+            });
+         </script>
      </head>
      <body>
         <crowdAuth:isAuthenticated>
@@ -120,12 +130,12 @@
                                 <div id="logo">
                                     <img src="/webportal/static/images/logo.png" />
                                 </div>
-                                <ul class="topnav">
+                                <ul class="menu">
                                     <li id="userManagement">
                                         <a href="/webportal/usermanagement/index" style="color:white;"> USER MANAGEMENT</a>
-                                        <ul class="subnav">
+                                        <ul>
                                            <li><g:link controller="usermanagement" action="adduser">Add a User</g:link></li>
-                                           <li><g:link controller="usermanagement" action="groupassignment">Pending Users</g:link></li>
+                                           <li><g:link controller="usermanagement" action="edituser">Pending Users</g:link></li>
                                        </ul>
                                     </li>
                                 </ul>

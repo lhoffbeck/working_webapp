@@ -18,19 +18,24 @@ class UserController {
         	// create domain object and assign parameters using data binding
             def u = new User(params)
 
-            println "-"*20
-            println params.dump()
-
             if(params.containsKey('token')) u.token = params.token
-
-            System.err.println(u.dump())
 
             def dao = new CrowdDAO()
 
-            // Check if the username already exists in Crowd. If not, create the user. If so, render back acceptable usernames for the user to pick from.
+            // Check if the username already exists in Crowd. If not, create the user.
             if(!dao.getUser(u.username)){
+
                 //assert dao.createUser(u) == true
-               // assert dao.addToDefaultGroup(u.username) == true
+
+                def query = PendingUser.where {email == u.email}
+                PendingUser user = query.find()
+
+                System.err.println "p"*30
+                System.err.println user.dump()
+                for(perm in user.permissions){System.err.println "------${perm}"}
+
+                //if()
+                //assert dao.addToDefaultGroup(u.username) == true
                
                /*try{
                     sendMail {     
