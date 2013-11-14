@@ -19,6 +19,10 @@ class User {
     String displayName
     String token
     String district
+    List confirmedDistricts = []
+    List permisions = []
+    Map attributes = [:]
+    Map groups = [:]
 
     def setToken(token){
         this.token = token
