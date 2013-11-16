@@ -7,10 +7,15 @@
 </head>
 <body>
     <style type="text/css">
-            .hiddenx {
+            .hidden {
                 visibility:hidden;
             }
     </style>
+
+    <g:form url="[controller:'usermanagement', action:'edituser']" id="filter">
+        <g:select name="district" from="${groupList}" value="test" noSelection="${['null':'Select a district']}"/>
+        <g:submitButton class="button" name="submitButton" value="Filter" />
+    </g:form>
 
     <g:if test="${userList}">
     	<table id="users">
@@ -36,32 +41,33 @@
     			</tr>
     		</g:each>
     	</table>
-    </g:if>
+    
     <br/>
 
-    <g:form url="[controller:'usermanagement', action:'edituser']" id="edit">
-        <label for="email">Email:</label>
-        <g:textField name="email" value="" style="width: 200px;"/>
-        <br/>
-        <label for="group">District:</label>
-        <g:select name="district" from="${groupList}" value="test" noSelection="${['null':'Select a district']}"/>
-        <br/>
-        <br/>
+        <g:form url="[controller:'usermanagement', action:'edituser']" id="edit">
+            <label for="email">Email:</label>
+            <g:textField name="email" value="" style="width: 200px;"/>
+            <br/>
+            <label for="group">District:</label>
+            <g:select name="district" from="${groupList}" value="test" noSelection="${['null':'Select a district']}"/>
+            <br/>
+            <br/>
 
-        <table id="permisions">
-            <g:each var="${perm}" in="${permList}">
-                <tr>
-                    <td>${perm}:</td>
-                    <td><g:checkBox name="${perm}" value=""/></td>
-                </tr>
-            </g:each>
-        </table>
+            <table id="permisions">
+                <g:each var="${perm}" in="${permList}">
+                    <tr>
+                        <td>${perm}:</td>
+                        <td><g:checkBox name="${perm}" value=""/></td>
+                    </tr>
+                </g:each>
+            </table>
 
-        </br>
+            </br>
 
-        <g:submitButton class="button" name="submitButton" value="save" />
-    </g:form>
-
+            <g:submitButton class="button" name="submitButton" value="save" />
+        </g:form>
+    </g:if>
+    
     <g:javascript library="jquery" plugin="jquery"/>
 
 	<script type="text/javascript">

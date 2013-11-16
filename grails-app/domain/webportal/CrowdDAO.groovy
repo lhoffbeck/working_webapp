@@ -64,6 +64,51 @@ class CrowdDAO {
     }
 	}
 
+  def updateUser(User u){
+    String xml = """
+      <user name='${u.username}' expand='attributes'>
+        <first-name>${u.firstName}</first-name>
+        <last-name>${u.lastName}</last-name>
+        <display-name>${u.firstName} ${u.lastName}</display-name>
+        <email>${u.email}</email>
+        <active>true</active>
+        <attributes>
+          <link rel='self' href='/user/attribute?username=${u.username}'/>
+        </attributes>
+        <password>
+          <link rel='edit' href='/user/password?username=${u.username}'/>
+          <value>${u.password}</value>
+        </password>
+      </user>"""
+
+    HTTPBuilder builder = new HTTPBuilder( "${baseURL}/user/${u.username}" )
+
+    builder.auth.basic appUser,appPas
+
+    builder.request(PUT, XML){
+          
+      body = xml
+                   
+      response.success = { resp -> 
+
+          assert resp.status == 201
+          
+          println "request succeeded"
+
+          addUserAttribute([district:u.district], u.username)
+
+          return true
+      }
+           
+      response.failure = { resp ->
+          println 'request failed: ' + resp.status
+          assert resp.status >= 400
+
+          return false
+      }
+    }
+  }
+
   def addUserAttribute(Map attributes, username){
 
     String xml = "<?xml version='1.0' encoding='UTF-8'?><attributes>"

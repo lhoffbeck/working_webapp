@@ -50,23 +50,35 @@ class UsermanagementController {
 
     def edituser(){
 
-        if (request.method == 'POST') {
-
-            // save user to database
-            new PendingUser(params).save(failOnError: true)
-
-            //println params.dump()
-
-        } 
-
         def dao = new CrowdDAO()
         def groupList = dao.getAllGroups("Schools")
         def permList = dao.getAllGroups("Permissions")
-        def userList = dao.getAllUsersInNestedGroup("Schools")
-        userList.each{
-            dao.getUserGroupInfo(it.getValue())
-        }
+        def userList = []
 
+
+        if (request.method == 'POST') {
+            if(params.get('submitButton') == 'Filter')
+            {
+                userList = dao.getAllUsersInNestedGroup(URLEncoder.encode(params.get('district'),'UTF-8'))
+                userList.each{
+                    dao.getUserGroupInfo(it.getValue())
+                }
+            }
+            if(params.get('submitButton') == 'View All')
+            {
+                userList = dao.getAllUsersInNestedGroup("Schools")
+                userList.each{
+                    dao.getUserGroupInfo(it.getValue())
+                }
+            }
+            else if(params.get('submitButton') == 'Save')
+            {
+                def UpdatedUser = new UpdatedUser(params.email, params.district)
+                UpdatedUser.setToken()
+            }
+        } 
+
+        
         return[userList:userList,groupList:groupList, permList:permList]
     }
 }
