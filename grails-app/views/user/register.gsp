@@ -66,7 +66,7 @@
           </div>
         </g:if>
         <g:else> <!-- token in url -->
-          <g:hiddenField name="tkn" class="${hasErrors(bean:user,field:'token','errors')}" value="${params.tkn}"/>
+          <g:hiddenField name="token" class="${hasErrors(bean:user,field:'token','errors')}" value="${params.token}"/>
         </g:else> 
 
           <label>&nbsp;</label>

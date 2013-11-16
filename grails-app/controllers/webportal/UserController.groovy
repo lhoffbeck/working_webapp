@@ -18,8 +18,10 @@ class UserController {
         	// create user object and assign parameters using data binding
             def user = new User(params)
 
+            System.err.println params.dump()
+
             // make sure that the user token field gets populated regardless if it came in the URL or the form.
-            if(params.containsKey('token')) user.token = params.token
+            if(params.containsKey('token')){user.token = params.token; System.err.println "inside the if"}
 
             // data access object fro crowd
             def dao = new CrowdDAO()
@@ -30,6 +32,10 @@ class UserController {
                 // Check if the user with the specified token is located in the local GORM'd db so we can check against his token
                 def query = PendingUser.where { email == user.email }
                 PendingUser pendingUser = query.find()
+
+                System.err.println pendingUser.dump()
+                System.err.println pendingUser.token
+                System.err.println "*"*30 + user.token
 
                 // if the user already exists in crowd and the token provided matches
                 if(pendingUser && pendingUser.token == user.token){
