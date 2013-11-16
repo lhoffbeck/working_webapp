@@ -8,11 +8,11 @@
     </head>
     <body>
 		<g:if test="${ flash.message }" >
-	        <div id="hello">${ flash.message }</div>
+	        <div id="successMessage">${ flash.message }</div>
 	    </g:if>
-    	<g:hasErrors bean="${pendingUser}">
+    	<g:hasErrors bean="${pendUser}">
 	        <div class="errors">
-	          <g:renderErrors bean="${pendingUser}"/>
+	          <g:renderErrors bean="${pendUser}" as="list"/>
 	        </div>
       	</g:hasErrors>
     	
@@ -28,23 +28,23 @@
 	        <br/>
 	       	<label for="group">District:</label>
 			<div>
-				<g:select name="district" from="${groupList}" value="${PendingUser?.district}" noSelection="${['null':'Select a district']}"/>
+				<g:select name="district" from="${groupList}" value="${PendingUser?.district}" noSelection="${["":'Select a district']}"/>
 			</div>
 			<br/>
 			<br/>
 
 			<table>
 				<tr>
-					<td>Information:</td>
-					<td><g:checkBox name="perm_information"/></td>
+					<td>Operational Changes:</td>
+					<td><g:checkBox name="permOperational_Changes"/></td>
 				</tr>
 				<tr>
 					<td>Reports:</td>
-					<td><g:checkBox name="perm_report"/></td>
+					<td><g:checkBox name="permReports"/></td>
 				</tr>
 				<tr>
-					<td>Admin:</td>
-					<td><g:checkBox name="perm_admin"/></td>
+					<td>Notifications:</td>
+					<td><g:checkBox name="permNotifications"/></td>
 				</tr>
 			</table>
 

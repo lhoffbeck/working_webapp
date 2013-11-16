@@ -58,7 +58,7 @@
         </div>
 
         <!-- If the user was redirected from his/her email, the url will have the token. else, they can sign up and get put into a pending users group. -->
-        <g:if test="${!params.containsKey('tkn')}"> <!-- no token in URL -->
+        <g:if test="${!params.containsKey('token')}"> <!-- no token in URL -->
           <label for="token">Token</label>
           <div class="rightcol">
             <g:textField name="token"
@@ -66,7 +66,7 @@
           </div>
         </g:if>
         <g:else> <!-- token in url -->
-          <g:hiddenField name="tkn" class="${hasErrors(bean:user,field:'token','errors')}" value="${params.tkn}"/>
+          <g:hiddenField name="token" class="${hasErrors(bean:user,field:'token','errors')}" value="${params.token}"/>
         </g:else> 
 
           <label>&nbsp;</label>

@@ -3,7 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" slick-uniqueid="3">
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <title>Login to Web Portal</title>
+
+      <title><g:layoutTitle default="Login to Web Portal" /></title>
+      <g:layoutHead />
+      
       <link rel="stylesheet" href="${resource(dir:'css',file:'rokbox-style.css')}" />
       <link rel="stylesheet" href="${resource(dir:'css',file:'grid-12.css')}" />
       <link rel="stylesheet" href="${resource(dir:'css',file:'gantry-core.css')}" />
@@ -28,7 +31,6 @@
                 margin: 0 auto -50px;
             } 
             #loginDialog{
-                width: 250px;
                 height: 300px;
                 float: right;
                 margin-top: 150px;
