@@ -2,6 +2,7 @@ package webportal
 
 class UsermanagementController {
 
+
     def index(){ }
 
     def groupassignment(){
@@ -11,11 +12,17 @@ class UsermanagementController {
     	def allPendingUsers = dao.getAllUsersInGroup("pending_approval")
     	def groupList = dao.getAllGroups("Schools")
 
-    	return [userList:allPendingUsers, groupList:groupList]
+    	return [ userList:allPendingUsers, groupList:groupList ]
     }
 
 
     def adduser(){
+
+        // get the information needed to populate the lists of district and permissions.
+        def dao = new CrowdDAO()
+        def groupList = dao.getAllGroups("Schools")
+        def permList = dao.getAllGroups("Permissions")
+
 
     	// if this is the form submit
     	if (request.method == 'POST') {
@@ -27,25 +34,41 @@ class UsermanagementController {
             // add each permission to the pending user
             params.each{ key, value ->
                 if(key ==~ /perm.*/ && value == 'on'){
-                    println "f00"*50
-                    pendUser.addToPermissions(new Permission(key.replace("perm_","")))
+                    pendUser.addToPermissions(new Permission(key.replace("perm","").replace("_"," ")))
                 }
             }
 
-            try{
-                pendUser.save(failOnError:true)
+            pendUser.save()
+
+
+            // if saving the user to the database succeded
+            if(!pendUser.hasErrors()){
+                sendTokenEmail(pendUser.email, pendUser.token)
                 flash.message = "User with email ${pendUser.email} was successfuly created!"
-            }catch(Exception ex){
+            }else{
+                flash.message = ""
+                render(view: 'adduser', model:[pendUser: pendUser,groupList:groupList, permList:permList])
             }
     	} 
 
-        // get the information needed to repopulate the list.
-	    def dao = new CrowdDAO()
-	    def groupList = dao.getAllGroups("Schools")
-	    def permList = dao.getAllGroups("Permissions")
-
 	    return [groupList:groupList, permList:permList]
-    	
+    }
+
+
+    private def sendTokenEmail(emailAddress,  token)
+    {
+
+        def content = "Your Level Data web portal account is ready! Please follow the following link to complete the sign up process: " + 
+                    "http://localhost:8080/webportal/user/register?token=${token}"
+        try{
+            sendMail {     
+                multipart true
+                to emailAddress   
+                subject "Your Account Is Ready!"     
+                body(view:"/mail/confirmation",model:[content:content])
+            }
+            println "email sent"
+        }catch(Exception ex){ throw ex }
     }
 
     def edituser(){

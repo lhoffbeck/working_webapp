@@ -13,12 +13,12 @@ class CrowdDAO {
 
   static mapWith = "none"
 
-	private final def appUser = "webportal"
-	private final def appPas = "4787Campus"
+  private final def appUser = "webportal"
+  private final def appPas = "4787Campus"
   private final def baseURL = "http://crowd.timothywebster.net:8095/crowd/rest/usermanagement/latest"
 
 
-	def createUser(User u){
+  def createUser(User u){
 
     String xml = """
       <user name='${u.username}' expand='attributes'>
@@ -38,31 +38,31 @@ class CrowdDAO {
 
     HTTPBuilder builder = new HTTPBuilder( "${baseURL}/user" )
 
-		builder.auth.basic appUser,appPas
+    builder.auth.basic appUser,appPas
 
     builder.request(POST, XML){
           
       body = xml
                    
- 			response.success = { resp -> 
+      response.success = { resp -> 
 
           assert resp.status == 201
           
           println "request succeeded"
 
-          addUserAttribute([district:u.district], u.username)
+          //addUserAttribute([district:u.district], u.username)
 
           return true
       }
            
       response.failure = { resp ->
-	        println 'request failed: ' + resp.status
-	        assert resp.status >= 400
+          println 'request failed: ' + resp.status
+          assert resp.status >= 400
 
           return false
       }
     }
-	}
+  }
 
   def addUserAttribute(Map attributes, username){
 
@@ -100,11 +100,14 @@ class CrowdDAO {
     }
   }
 
-  def addToDefaultGroup(username){
+  def addUserToGroup(username, groupname){
 
     String xml = "<?xml version='1.0' encoding='UTF-8'?><user name='${username}'/>"
 
-    HTTPBuilder builder = new HTTPBuilder( "${baseURL}/group/user/direct?groupname=pending_approval" )
+    // encode groupname as url
+    groupname = java.net.URLEncoder.encode(groupname, "UTF-8")
+
+    HTTPBuilder builder = new HTTPBuilder( "${baseURL}/group/user/direct?groupname=${groupname}" )
 
     builder.auth.basic appUser,appPas
 
@@ -128,7 +131,6 @@ class CrowdDAO {
           return false
       }
     }
-
   }
 
   def getAllUsersInGroup(groupname){
@@ -271,7 +273,7 @@ class CrowdDAO {
             user.lastName = userRecord."last-name"
             user.displayName = userRecord."display-name"
             user.username = userRecord.@name
-            userRecord.attributes.attribute.each{ if( it.@name == "district") user.district = it.values }
+            // userRecord.attributes.attribute.each{ if( it.@name == "district") user.district = it.values }
             user.email = userRecord.email
             
             return user
@@ -363,7 +365,4 @@ class CrowdDAO {
     }
 
   }
-
-    static constraints = {
-    }
 }

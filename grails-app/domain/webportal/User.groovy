@@ -18,7 +18,6 @@ class User {
     String email 
     String displayName
     String token
-    String district
 
     def setToken(token){
         this.token = token

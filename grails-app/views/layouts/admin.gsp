@@ -7,9 +7,17 @@
          <link rel="stylesheet" href="${resource(dir:'css',file:'dropit.css')}" />
          <r:layoutResources/>
          <style type="text/css">
-             #hello{
-                    background-color: #66A366;
-                }
+            #successMessage{
+                background-color: #66A366;
+            }
+            .errors{
+                background-color: #FF4D4D;
+            }
+            .errors ul {
+                list-style-type: none;
+                padding:0.5em; 
+                margin:0;
+            }
 
              #topbar{
                  position: absolute;
