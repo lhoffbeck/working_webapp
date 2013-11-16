@@ -213,6 +213,43 @@ class CrowdDAO {
 
   }
 
+  def getUserGroupInfo(user)
+  {
+    def builder = new HTTPBuilder("${baseURL}/user/group/direct?username=${user.username}")
+    builder.auth.basic appUser,appPas
+
+    builder.request(GET) { req ->
+
+      response.success = { resp, xmlText -> 
+
+        println "request succeeded"
+        assert resp.status < 400
+        
+        def records = new XmlSlurper().parseText(groovy.xml.XmlUtil.serialize(xmlText))
+        def allRecords = records.group 
+
+        //get all permision groups (to exclude)
+        def permList = getAllGroups("Permissions")
+
+        allRecords.each{
+          if(permList.contains(it.@name))
+          {
+            user.permisions.add(it.@name)
+          }
+          else
+          {
+            user.confirmedDistricts.add(it.@name)
+          }
+        }     
+      }
+     
+      response.failure = { resp ->
+        println 'request failed: ' + resp.status
+        assert resp.status >= 400
+      }
+    }
+  }
+
   def getAllGroups(groupname){
 
     def builder = new HTTPBuilder("${baseURL}/group/child-group/direct?groupname=${groupname}")
@@ -260,25 +297,33 @@ class CrowdDAO {
     builder.request(GET) { req ->
 
       response.success = { resp, xmlText -> 
-            
-            println "request succeeded"
-            assert resp.status < 400
+          
+        println "request succeeded"
+        assert resp.status < 400
 
-            def userRecord = new XmlSlurper().parseText(groovy.xml.XmlUtil.serialize(xmlText).replaceAll('..xml version="1.0" encoding="UTF-8"..',""))
-            //println groovy.xml.XmlUtil.serialize(xmlText).replaceAll('..xml version="1.0" encoding="UTF-8"..',"")
+        def userRecord = new XmlSlurper().parseText(groovy.xml.XmlUtil.serialize(xmlText).replaceAll('..xml version="1.0" encoding="UTF-8"..',""))
+        //println groovy.xml.XmlUtil.serialize(xmlText).replaceAll('..xml version="1.0" encoding="UTF-8"..',"")
 
-            def user = new User()
+        def user = new User()
 
-            user.firstName = userRecord."first-name"
-            user.lastName = userRecord."last-name"
-            user.displayName = userRecord."display-name"
-            user.username = userRecord.@name
-            // userRecord.attributes.attribute.each{ if( it.@name == "district") user.district = it.values }
-            user.email = userRecord.email
-            
-            return user
+        user.username = userRecord.@name
+        user.firstName = userRecord."first-name"
+        user.lastName = userRecord."last-name"
+        user.displayName = userRecord."display-name"
+        user.email = userRecord.email
+        userRecord.attributes.attribute.each{ 
+          if( it.@name == "district") 
+          {
+            user.district = it.values
+          }
+          else if (it.@name != "requiresPasswordChange" && it.@name != "passwordLastChanged") //does not seem like important information
+          {
+            user.attributes[ (String)it.@name ] = it.values
+          }
         }
-     
+        return user
+      }
+
       response.failure = { resp ->
         println "user ${username} does not currently exist in crowd"
         assert resp.status >= 400

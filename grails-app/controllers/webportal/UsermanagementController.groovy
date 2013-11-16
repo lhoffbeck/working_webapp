@@ -85,9 +85,10 @@ class UsermanagementController {
         def dao = new CrowdDAO()
         def groupList = dao.getAllGroups("Schools")
         def permList = dao.getAllGroups("Permissions")
-        
         def userList = dao.getAllUsersInNestedGroup("Schools")
-        print userList.get("ppsUser1").firstName
+        userList.each{
+            dao.getUserGroupInfo(it.getValue())
+        }
 
         return[userList:userList,groupList:groupList, permList:permList]
     }
