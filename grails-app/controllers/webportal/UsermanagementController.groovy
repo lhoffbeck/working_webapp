@@ -96,8 +96,36 @@ class UsermanagementController {
             }
             else if(params.get('submitButton') == 'Save')
             {
-                def UpdatedUser = new UpdatedUser(params.email, params.district)
-                UpdatedUser.setToken()
+                def user = new User()
+
+                params.each{ key, value ->
+                    println key + " - " + value
+                }
+
+                
+                user.username = params.get('userName')
+                user.firstName = params.get('firstName')
+                user.lastName = params.get('lastName')
+                user.displayName = params.get('displayName')
+                user.email = params.get('email')
+                if(params.get('oldDistrict')!=params.get('district'))
+                {
+                    dao.removeUserFromGroup(params.get('userName'),params.get('oldDistrict'))
+                    dao.addUserToGroup(params.get('userName'),params.get('district'))
+                }
+
+                permList.each{
+                    dao.removeUserFromGroup(params.get('userName'),(String)it) //delete all, and than re add (no good way to keep track of a list i want to keep dynamic)
+                }
+
+                params.each{ key, value ->
+                    if(key ==~ /perm.*/){
+                        dao.addUserToGroup(params.get('userName'),key.replace("perm","").replace("_"," "))
+                    }
+                }
+
+                dao.updateUser(user)
+                           
             }
         } 
 

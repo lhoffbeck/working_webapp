@@ -5,6 +5,8 @@ import groovyx.net.http.*
 import static groovyx.net.http.ContentType.XML
 import static groovyx.net.http.Method.POST
 import static groovyx.net.http.Method.GET
+import static groovyx.net.http.Method.PUT
+import static groovyx.net.http.Method.DELETE
 import groovy.xml.*
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler
 import groovy.util.XmlSlurper
@@ -71,17 +73,9 @@ class CrowdDAO {
         <last-name>${u.lastName}</last-name>
         <display-name>${u.firstName} ${u.lastName}</display-name>
         <email>${u.email}</email>
-        <active>true</active>
-        <attributes>
-          <link rel='self' href='/user/attribute?username=${u.username}'/>
-        </attributes>
-        <password>
-          <link rel='edit' href='/user/password?username=${u.username}'/>
-          <value>${u.password}</value>
-        </password>
       </user>"""
 
-    HTTPBuilder builder = new HTTPBuilder( "${baseURL}/user/${u.username}" )
+    HTTPBuilder builder = new HTTPBuilder( "${baseURL}/user?username=${u.username}" )
 
     builder.auth.basic appUser,appPas
 
@@ -91,11 +85,11 @@ class CrowdDAO {
                    
       response.success = { resp -> 
 
-          assert resp.status == 201
+          assert resp.status == 204 
           
           println "request succeeded"
 
-          addUserAttribute([district:u.district], u.username)
+          //saddUserAttribute([district:u.district], u.username)
 
           return true
       }
@@ -163,6 +157,35 @@ class CrowdDAO {
       response.success = { resp, xmlText -> 
 
           assert resp.status == 201
+          
+          println "request succeeded"
+
+          return true
+      }
+           
+      response.failure = { resp ->
+          println 'request failed: ' + resp.status
+          assert resp.status >= 400
+
+          return false
+      }
+    }
+  }
+
+  def removeUserFromGroup(username, groupname){
+
+    groupname = java.net.URLEncoder.encode(groupname, "UTF-8")
+    username = java.net.URLEncoder.encode(username, "UTF-8")
+
+    HTTPBuilder builder = new HTTPBuilder( "${baseURL}/group/user/direct?groupname=${groupname}&username=${username}" )
+
+    builder.auth.basic appUser,appPas
+
+    builder.request(DELETE){  
+
+      response.success = { resp, xmlText -> 
+
+          assert resp.status == 204
           
           println "request succeeded"
 

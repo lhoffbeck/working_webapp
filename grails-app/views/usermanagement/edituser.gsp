@@ -15,6 +15,7 @@
     <g:form url="[controller:'usermanagement', action:'edituser']" id="filter">
         <g:select name="district" from="${groupList}" value="test" noSelection="${['null':'Select a district']}"/>
         <g:submitButton class="button" name="submitButton" value="Filter" />
+        <g:submitButton class="button" name="submitButton" value="View All" />
     </g:form>
 
     <g:if test="${userList}">
@@ -45,9 +46,19 @@
     <br/>
 
         <g:form url="[controller:'usermanagement', action:'edituser']" id="edit">
+            <g:hiddenField name="userName" value=""/>
+            <g:hiddenField name="displayName" value=""/>
+
+            <label for="firstName">First Name:</label>
+            <g:textField name="firstName" value="" style="width: 200px;"/>
+            <br/>
+            <label for="lastName">Last Name:</label>
+            <g:textField name="lastName" value="" style="width: 200px;"/>
+            <br/>
             <label for="email">Email:</label>
             <g:textField name="email" value="" style="width: 200px;"/>
             <br/>
+            <g:hiddenField name="oldDistrict" value=""/>
             <label for="group">District:</label>
             <g:select name="district" from="${groupList}" value="test" noSelection="${['null':'Select a district']}"/>
             <br/>
@@ -57,14 +68,15 @@
                 <g:each var="${perm}" in="${permList}">
                     <tr>
                         <td>${perm}:</td>
-                        <td><g:checkBox name="${perm}" value=""/></td>
+                        <g:hiddenField name="oldperm${perm}" value=""/>
+                        <td><g:checkBox name="perm${perm}" value=""/></td>
                     </tr>
                 </g:each>
             </table>
 
             </br>
 
-            <g:submitButton class="button" name="submitButton" value="save" />
+            <g:submitButton class="button" name="submitButton" value="Save" />
         </g:form>
     </g:if>
     
@@ -80,8 +92,13 @@
                 rows[i].onclick = (function() {
                     var cnt = i;
                     return function() {
+                        $("#edit #userName")[0].value =  $("#users #"+this.cells[0].parentNode.id+" #userName")[0].innerHTML;
+                        $("#edit #displayName")[0].value =  $("#users #"+this.cells[0].parentNode.id+" #displayName")[0].innerHTML;
+                        $("#edit #firstName")[0].value =  $("#users #"+this.cells[0].parentNode.id+" #firstName")[0].innerHTML;
+                        $("#edit #lastName")[0].value =  $("#users #"+this.cells[0].parentNode.id+" #lastName")[0].innerHTML;
                         $("#edit #email")[0].value =  $("#users #"+this.cells[0].parentNode.id+" #email")[0].innerHTML;
-                        
+                        $("#edit #oldDistrict")[0].value =  $("#users #"+this.cells[0].parentNode.id+" #district")[0].innerHTML;
+
                         var options = $("#edit #district option")
                         var selectedOptionText = $("#users #"+this.cells[0].parentNode.id+" #district")[0].innerHTML
                         for (var i = 0; i < options.length; i++) {
@@ -93,16 +110,12 @@
                         }
 
                         var permisionOptions = $("#edit #permisions [type=checkbox]")
-                        console.log(permisionOptions)
                         var permisionsHad = $("#users #"+this.cells[0].parentNode.id+" #permisions")
                         console.log(permisionsHad)
                         for (var i = 0; i < permisionOptions.length; i++) {permisionOptions[i].checked = false;}
                         for (var i = 0; i < permisionOptions.length; i++) {
                             for (var j = 0; j < permisionsHad.length; j++) {
-                                console.log(permisionOptions[i].id.toString());
-                                console.log(permisionsHad[j].innerHTML.toString());
-                                if (permisionOptions[i].id == permisionsHad[j].innerHTML) {
-                                    console.log("match");
+                                if (permisionOptions[i].id == "perm"+permisionsHad[j].innerHTML) {
                                     permisionOptions[i].checked = true;
                                     break;
                                 }
