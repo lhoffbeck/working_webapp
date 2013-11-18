@@ -5,7 +5,7 @@
 </head>
 <body>
     <style type="text/css">
-        
+
         #all{
             width: 900px;
             height: 100%;
