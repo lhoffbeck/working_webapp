@@ -64,6 +64,11 @@
     border: solid 1px #203E5F;
 }
 
+/* css for the pooh bear spambot pot */
+#userphone{
+  display: none;
+}
+
   </style>
 
   <script type="text/javascript">
@@ -146,6 +151,11 @@
       <p>
         <button id="submit_btn" name="submit_btn" type="submit" onmouseover="showErrors()" class="button-link btn">Create Account</button>
       </p>
+
+      <div id="userphone">
+        If you can see this field, don't fill it out.
+        <input type="text" name="body" value="" />
+      </div>
 
   </g:form>
 </crowdAuth:isNotAuthenticated>

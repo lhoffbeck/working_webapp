@@ -12,8 +12,8 @@ class UserController {
  
     def register = {
 
-        // new user posts his registration details
-        if (request.method == 'POST') {
+        // if form submit on registration page and the honeypot wasn't filled out by spambots
+        if (request.method == 'POST' && !params.body) {
 
             // data access object fro crowd
             def dao = new CrowdDAO()
