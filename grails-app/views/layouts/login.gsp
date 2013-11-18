@@ -4,9 +4,9 @@
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+
       <title><g:layoutTitle default="Login to Web Portal" /></title>
       <g:layoutHead />
-      
       <link rel="stylesheet" href="${resource(dir:'css',file:'rokbox-style.css')}" />
       <link rel="stylesheet" href="${resource(dir:'css',file:'grid-12.css')}" />
       <link rel="stylesheet" href="${resource(dir:'css',file:'gantry-core.css')}" />
@@ -89,66 +89,6 @@
          #rt-footer-surround .box1 a, #rt-footer-surround .box1 .title span, #rt-footer-surround .box4 a, #rt-footer-surround .box4 .title span {color:#c6e09f;}
          #rt-footer-surround .box4 .title, #rt-footer-surround .box1 .title {text-shadow: -1px 1px 0 #A3CD65, -3px 3px 0 rgba(0,0,0,0.15);}
       </style>
-      <script type="text/javascript" async="" src="./LD_files/ga.js"></script><script src="./LD_files/mootools-core.js" type="text/javascript"></script>
-      <style type="text/css"></style>
-      <script src="./LD_files/core.js" type="text/javascript"></script>
-      <script src="./LD_files/caption.js" type="text/javascript"></script>
-      <script src="./LD_files/mootools-more.js" type="text/javascript"></script>
-      <script src="./LD_files/rokbox.js" type="text/javascript"></script>
-      <script src="./LD_files/rokbox-config.js" type="text/javascript"></script>
-      <script src="./LD_files/gantry-smartload.js" type="text/javascript"></script>
-      <script src="./LD_files/gantry-buildspans.js" type="text/javascript"></script>
-      <script src="./LD_files/gantry-inputs.js" type="text/javascript"></script>
-      <script src="./LD_files/load-transition.js" type="text/javascript"></script>
-      <script src="./LD_files/fusion.js" type="text/javascript"></script>
-      <script type="text/javascript">
-         window.addEvent('load', function() {
-                new JCaption('img.caption');
-              });
-         var rokboxPath = '/plugins/system/rokbox/';
-         window.addEvent('domready', function() {new GantrySmartLoad({'offset': {'x': 200, 'y': 200}, 'placeholder': '/templates/rt_diametric/images/blank.gif', 'exclusion': ['']}); });
-              window.addEvent('domready', function() {
-                var modules = ['rt-block'];
-                var header = ['h3','h2','h1'];
-                GantryBuildSpans(modules, header);
-              });
-            
-         InputsExclusion.push('.content_vote','#rt-popup','#rt-popuplogin','#vmMainPage','#community-wrap')
-         window.addEvent("domready", function(){ new SmoothScroll(); });
-                     window.addEvent('domready', function() {
-                         new Fusion('ul.menutop', {
-                             pill: 0,
-                             effect: 'slide and fade',
-                             opacity:  1,
-                             hideDelay:  500,
-                             centered:  0,
-                             tweakInitial: {'x': -8, 'y': -6},
-                             tweakSubsequent: {'x':  -8, 'y':  -11},
-                             tweakSizes: {'width': 18, 'height': 20},
-                             menuFx: {duration:  300, transition: Fx.Transitions.Circ.easeOut},
-                             pillFx: {duration:  400, transition: Fx.Transitions.Back.easeOut}
-                         });
-                     });
-                     
-         window.addEvent('domready', function() {
-         });
-         window.addEvent('load', function() {
-         });
-         
-           
-      </script>
-      <script type="text/javascript">
-         var _gaq = _gaq || [];
-         _gaq.push(['_setAccount', 'UA-12127603-1']);
-         _gaq.push(['_trackPageview']);
-         
-         (function() {
-           var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-           ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-         })();
-         
-      </script>
    </head>
    <body class="presets-preset1 textshadow-1 font-family-diametric font-size-is-default logo-type-diametric logo-diametric-logostyle-style1 menu-type-fusionmenu inputstyling-enabled-1 typography-style-light col12 option-com-content menu-home apr12-home">
       <div id="rt-page-surround">

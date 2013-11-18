@@ -15,27 +15,22 @@ class UserController {
         // new user posts his registration details
         if (request.method == 'POST') {
 
-        	// create user object and assign parameters using data binding
-            def user = new User(params)
-
-            System.err.println params.dump()
-
-            // make sure that the user token field gets populated regardless if it came in the URL or the form.
-            if(params.containsKey('token')){user.token = params.token; System.err.println "inside the if"}
-
             // data access object fro crowd
             def dao = new CrowdDAO()
 
             // Check if the username already exists in Crowd. If not, create the user.
-            if(!dao.getUser(user.username)){
+            if(!dao.getUser(params.email)){
+
+                // create user object and assign parameters using data binding
+                def user = new User(params)
+                user.username = user.email
+
+                // make sure that the user token field gets populated regardless if it came in the URL or the form.
+                if(params.containsKey('token')){user.token = params.token }
 
                 // Check if the user with the specified token is located in the local GORM'd db so we can check against his token
                 def query = PendingUser.where { email == user.email }
                 PendingUser pendingUser = query.find()
-
-                System.err.println pendingUser.dump()
-                System.err.println pendingUser.token
-                System.err.println "*"*30 + user.token
 
                 // if the user already exists in crowd and the token provided matches
                 if(pendingUser && pendingUser.token == user.token){
@@ -54,7 +49,7 @@ class UserController {
 
                     redirect(action:'success')
 
-                } else{ // if the user's token doesn't match, stick him in the default group.
+                }else{ // if the user's token doesn't match, stick him in the default group.
 
                     // create the user in crowd
                     assert dao.createUser(user) == true
@@ -63,7 +58,7 @@ class UserController {
                     assert dao.addUserToGroup(user.username, 'pending_approval') == true
 
                     /*try{
-                        sendMail {     
+                        sendMail {
                           to "lhoffbeck@leveldatainc.com"    
                           subject "You have pending user accounts to confirm"     
                           body "Account creation request from ${u.firstName} ${u.lastName}. Please log in to the web portal to confirm group membership."
@@ -71,20 +66,21 @@ class UserController {
                         println "email sent"
                     }catch(Exception ex){ throw ex }*/
 
+                    redirect(action:'pendingsuccess')
+
                     // return "You will recieve an email from us when your account is ready to be used."
                 }
             }// end  "if user with username already exists in crowd"
             else{
-                //redirect(controller:'registration_failure')
+                redirect(action:'failure')
             }
         } // end if this method was requested via POST
     } // end method register
 
-    def success = {
-        return [message: "Congratulations! Your account is ready to be used!"]
-    }
+    def success = {}
 
-    def failure = {
-        return [message: "Your account was unable to be created because your username is already being used."]
-    }
+    def pendingsuccess = {}
+
+    // failure occurs when a user is already in crowd and they try to create an account
+    def failure = {}
 }
