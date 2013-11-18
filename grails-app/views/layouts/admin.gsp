@@ -74,6 +74,7 @@
              #mainNav ul{
                  height: 60px;
                  margin-left: 50px;
+                 float:left;
                  list-style-type: none;
                  text-align: center;
                  padding:0px;
@@ -100,7 +101,13 @@
                  top:125px;
                  width:100%;
              }
-             body { margin:0px; }
+             body { 
+                size: 100% 100%;
+                background-color: #fff;
+                background-image: url(http://www.leveldatainc.com/templates/rt_diametric/images/overlays/light/body-overlay.png);
+                background-size: 100% 100%;
+                background-repeat:no-repeat;   
+            }
              #footer{
                  position: absolute;
                  bottom: 0px;
@@ -145,6 +152,11 @@
                                            <li><g:link controller="usermanagement" action="adduser">Add a User</g:link></li>
                                            <li><g:link controller="usermanagement" action="edituser">Pending Users</g:link></li>
                                        </ul>
+                                    </li>
+                                </ul>
+                                <ul class="menu">
+                                    <li id="reports">
+                                        <a href="/webportal/usermanagement/index" style="color:white;"> REPORTS</a>
                                     </li>
                                 </ul>
                              </div>
