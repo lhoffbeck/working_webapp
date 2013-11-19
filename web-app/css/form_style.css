@@ -89,7 +89,7 @@ input {
 	color: #666; 
 	width: 60% ;
 	background: none repeat scroll 0 0 #FFFFFF; 
-	border: 1px solid #8EAF67; 
+	border: 1px solid #8CC13F; 
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15) inset, -5px -5px 0 0 #F5F5F6, 5px 5px 0 0 #F5F5F6, 5px 0 0 0 #F5F5F6, 0 5px 0 0 #F5F5F6, 5px -5px 0 0 #F5F5F6, -5px 5px 0 0 #F5F5F6; 
 	color: #545658; 
 	padding: 2px; 
@@ -97,7 +97,7 @@ input {
 	border-radius: 2px 2px 2px 2px; 
 }
 #submit { 
-	border: 1px solid #8EAF67; 
+	border: 1px solid #8CC13F; 
 	border-radius: 2px 2px 2px 2px; 
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1); 
 	color: #437182; 
@@ -119,7 +119,7 @@ form, .fancyTable {
 	margin: 0 auto; 
 	background: #fff; 
 	padding: 20px; 
-	border: 5px solid #8EAF67; 
+	border: 5px solid #8CC13F; 
 }
 
 

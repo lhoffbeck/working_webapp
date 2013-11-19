@@ -39,7 +39,7 @@
         #userTable td, #userTable th 
         {
             font-size:1em;
-            border:3px solid #8EAF67;
+            border:3px solid #8CC13F;
             padding:3px 7px 2px 7px;
         }
         #userTable th 
@@ -48,13 +48,17 @@
             text-align:left;
             padding-top:5px;
             padding-bottom:4px;
-            background-color:#8EAF67;
+            background-color:#8CC13F;
             color:#ffffff;
         }
-        #userTable tr.alt td 
+        .alt 
         {
-            color:#000000;
-            background-color:#EAF2D3;
+            background-color:#D1E6B2;
+        }
+
+        .hover { 
+            background-color: #A3A3A3; 
+            cursor: pointer;
         }
 
        /* #all{
@@ -163,8 +167,8 @@
                     <table id="userTable" class="">
 
                         <tr>
-                            <th>Last</th>
                             <th>First</th>
+                            <th>Last</th>
                         </tr>
 
                         <!-- counter used to do odd/even row coloring -->
@@ -173,8 +177,8 @@
 
                         <g:each var="user" in="${userList}">
                             <tr id="${user.getValue().username.split('\\@')[0]}" class="${counter++ % 2 == 0 ? 'alt' : ''}" >
-                                <td id="lastName">${user.getValue().lastName}</td>
                                 <td id="firstName">${user.getValue().firstName}</td>
+                                <td id="lastName">${user.getValue().lastName}</td>
                                 <td id="displayName" class="hidden">${user.getValue().displayName}</td>
                                 <td id="username" class="hidden">${user.getValue().username}</td>
                                 <td id="district" class="hidden">${user.getValue().confirmedDistricts[0]}</td>
@@ -235,6 +239,26 @@
 
 	<script type="text/javascript">
 
+        // highlight table rows on hover
+        /*$("tr").not(':first').hover(
+          var color = $(this).css('background');
+          function () {
+            $(this).css("background","yellow");
+          }, 
+          function () {
+            $(this).css("background",color);
+          }
+        );*/
+
+        $("table").delegate('tr','mouseover mouseleave', function(e) {
+            if (e.type == 'mouseover') {
+              $(this).addClass("hover");
+            }
+            else {
+              $(this).removeClass("hover");
+            }
+        });
+
     	window.onload = addRowHandlers;
 
     	function addRowHandlers(){
@@ -273,8 +297,6 @@
                                 }
                             }
                         }
-
-
                     }    
                 })(i);
             }
