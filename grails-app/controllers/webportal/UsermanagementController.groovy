@@ -77,6 +77,7 @@ class UsermanagementController {
         def groupList = dao.getAllGroups("Schools")
         def permList = dao.getAllGroups("Permissions")
         def userList = []
+        def selectedDistrict
 
 
         if (request.method == 'POST') {
@@ -84,6 +85,7 @@ class UsermanagementController {
             // If the submit was caused by the dropdown change
             if(!params.submitButton)
             {
+                selectedDistrict = params.district
                 userList = dao.getAllUsersInNestedGroup(URLEncoder.encode(params.district,'UTF-8'))
                 userList.each{
                     dao.getUserGroupInfo(it.getValue())
@@ -91,6 +93,7 @@ class UsermanagementController {
             }
             if(params.submitButton == 'View All')
             {
+                selectedDistrict = ''
                 userList = dao.getAllUsersInNestedGroup("Schools")
                 userList.each{
                     dao.getUserGroupInfo(it.getValue())
@@ -99,10 +102,6 @@ class UsermanagementController {
             else if(params.submitButton == 'Save')
             {
                 def user = new User()
-
-                params.each{ key, value ->
-                    println key + " - " + value
-                }
                 
                 user.username = params.userName
                 user.firstName = params.firstName
@@ -131,6 +130,6 @@ class UsermanagementController {
         } 
 
         
-        return[userList:userList,groupList:groupList, permList:permList]
+        return[userList:userList,groupList:groupList, permList:permList,selectedDistrict:selectedDistrict]
     }
 }
