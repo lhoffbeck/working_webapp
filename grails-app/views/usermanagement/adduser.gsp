@@ -2,9 +2,13 @@
     <head>
         <meta name="layout" content="admin"/> 
         <title>Home</title>
-        <style>
-        	
-        </style>
+
+ 		<link rel="stylesheet" href="${resource(dir:'css',file:'form_style.css')}" />
+  		<link rel="stylesheet" href="${resource(dir:'css',file:'nod.css')}" />
+
+ 		<script src="${resource(dir:'js',file:'1.8.0.jquery.min.js')}"></script>
+		<script src="${resource(dir:'js',file:'bootstrap.min.js')}"></script>
+		<script src="${resource(dir:'js',file:'nod.js')}"></script>
     </head>
     <body>
 		<g:if test="${ flash.message }" >
@@ -19,38 +23,41 @@
       	<br/>
       	<br/>
 
-    	<g:form url="[controller:'usermanagement', action:'adduser']">
-	        <label for="email">Email:</label>
-	        <div>
-	          <g:textField name="email" value="${PendingUser?.email}"
-	            class="${hasErrors(bean:PendingUser,field:'email','errors')} input" style="width: 200px;"/>
-	        </div>
-	        <br/>
-	       	<label for="group">District:</label>
-			<div>
-				<g:select name="district" from="${groupList}" value="${PendingUser?.district}" noSelection="${["":'Select a district']}"/>
+    	<g:form id="theform" class="simpleform wideForm" style="width: 400;" url="[controller:'usermanagement', action:'adduser']">
+
+      		<h1 class="featuredarticle title" style="padding-left:65px;">ADD<span> an account</span> </h1><br/>
+
+    		<p>
+	        	<label for="email">Email:</label>
+	          	<g:textField name="email" id="email" value="${PendingUser?.email}" style="width: 200px;"/>
+	        </p>
+
+	        <p>
+	       		<label for="group">District:</label>
+				<g:select name="district" from="${groupList}" class="dropdown" value="${PendingUser?.district}" noSelection="${["":'Select a district']}"/>
+			</p>
+
+			<div class="checkbox">
+				<g:checkBox style="border:none;box-shadow:none;" id="check1" name="permOperational_Changes"/>
+				<label for="check1" class="ckbx" >Operational Changes</label>
+				<br>
+				<g:checkBox style="border:none;box-shadow:none;" id="check2" name="permReports"/>				
+				<label for="check2" class="ckbx" >Reports</label>
+				<br>
+				<g:checkBox style="border:none;box-shadow:none;" id="check3" name="permNotifications"/>
+				<label for="check3" class="ckbx" >Notifications</label>
 			</div>
-			<br/>
-			<br/>
 
-			<table>
-				<tr>
-					<td>Operational Changes:</td>
-					<td><g:checkBox name="permOperational_Changes"/></td>
-				</tr>
-				<tr>
-					<td>Reports:</td>
-					<td><g:checkBox name="permReports"/></td>
-				</tr>
-				<tr>
-					<td>Notifications:</td>
-					<td><g:checkBox name="permNotifications"/></td>
-				</tr>
-			</table>
+			<g:submitButton class="button-link" name="submitButton" value="Create!" />
+			<script type="text/javascript">
+				var metrics = [
+	        		[ '#email', 'presence', 'Cannot be empty' ],
+			        [ '#email', 'email' , 'Invalid email address' ]
+			    ];
 
-			</br>
+		      	$("#theform").nod(metrics);
 
-			<g:submitButton class="button" name="submitButton" value="Create!" />
+			</script>
 		</g:form>
     </body>
 </html>

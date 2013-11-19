@@ -3,71 +3,22 @@
   <title>Registration</title>
   <meta name="layout" content="login" />
   <link rel="stylesheet" href="${resource(dir:'css',file:'form_style.css')}" />
+  <link rel="stylesheet" href="${resource(dir:'css',file:'nod.css')}" />
   <script src="${resource(dir:'js',file:'1.8.0.jquery.min.js')}"></script>
   <script src="${resource(dir:'js',file:'bootstrap.min.js')}"></script>
   <script src="${resource(dir:'js',file:'nod.js')}"></script>
 
   <style type="text/css">
 
-  .nod_msg {
-    background: #fcc;
-    padding: 2px 5px;
-    margin-left: 5px;
-    border-radius: 5px;
-    font-weight: bold;
-    color: #b94a48;
-    display: inline-block;
+  html, body {
+    margin: 0px;
+    padding: 0px;
+  } 
+
+  /* css for the pooh bear spambot pot */
+  #userphone{
+    display: none;
   }
-
-  .hideme{
-    background: #fcc;
-    padding: 2px 5px;
-    margin-left: 5px;
-    border-radius: 5px;
-    font-weight: bold;
-    color: #b94a48;
-    display: inline-block;
-  }
-
-.button-link {
-    padding: 10px 15px;
-    background: #4479BA;
-    color: #FFF;
-    width: 208px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    border: solid 1px #20538D;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
-    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
-    -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
-    -webkit-transition-duration: 0.2s;
-    -moz-transition-duration: 0.2s;
-    transition-duration: 0.2s;
-    -webkit-user-select:none;
-    -moz-user-select:none;
-    -ms-user-select:none;
-    user-select:none;
-}
-.button-link:hover {
-    background: #356094;
-    border: solid 1px #2A4E77;
-    text-decoration: none;
-    cursor: pointer;
-}
-.button-link:active {
-    -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
-    -moz-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
-    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
-    background: #2E5481;
-    border: solid 1px #203E5F;
-}
-
-/* css for the pooh bear spambot pot */
-#userphone{
-  display: none;
-}
 
   </style>
 
@@ -89,18 +40,11 @@
         [ '#confirm', 'same-as:#password', 'Passwords dont match' ]
       ];
 
-      $("#signup-form").nod(metrics);
+      $("#theform").nod(metrics);
     }
 
     errorsAreShowing = true;
   }
-      
-/*
-      $(".hideme").addClass("nod_msg");
-      $( ".hideme" ).css( "border", "3px solid red" );
-      $(".nod_msg").removeClass("hideme");*/
-    
-
   </script>
 </head>
 <body>
@@ -108,9 +52,9 @@
 
 <crowdAuth:isNotAuthenticated>
 
-   <h1 class="featuredarticle title" style="padding-left:65px;">Register<span> for an account</span> </h1><br/>
+  <h1 class="featuredarticle title" style="padding-left:65px;">Register<span> for an account</span> </h1><br/>
 
-  <g:form class="simpleform" id="signup-form" url="[controller:'user',action:'register']">
+  <g:form class="fancyTable" id="theform" url="[controller:'user',action:'register']">
 
       <p>
         <label for="firstName">First Name:</label>

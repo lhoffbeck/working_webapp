@@ -5,7 +5,11 @@
          <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
          <script src="${resource(dir:'js',file:'dropit.js')}"></script>
          <link rel="stylesheet" href="${resource(dir:'css',file:'dropit.css')}" />
+         <link rel="stylesheet" href="${resource(dir:'css',file:'template.css')}" />
+
          <r:layoutResources/>
+         <g:layoutHead />
+
          <style type="text/css">
             #successMessage{
                 background-color: #66A366;
@@ -102,6 +106,7 @@
                  width:100%;
              }
              body { 
+                margin: none;
                 size: 100% 100%;
                 background-color: #fff;
                 background-image: url(http://www.leveldatainc.com/templates/rt_diametric/images/overlays/light/body-overlay.png);
@@ -135,7 +140,7 @@
             });
          </script>
      </head>
-     <body>
+     <body >
         <crowdAuth:isAuthenticated>
             <crowdAuth:ifAllGranted group="Admins">
                  <div id="topBar"/>
@@ -153,8 +158,6 @@
                                            <li><g:link controller="usermanagement" action="edituser">Pending Users</g:link></li>
                                        </ul>
                                     </li>
-                                </ul>
-                                <ul class="menu">
                                     <li id="reports">
                                         <a href="/webportal/usermanagement/index" style="color:white;"> REPORTS</a>
                                     </li>
@@ -163,13 +166,9 @@
                          </div>
                      </div>
                  </div>
-                 <div id="content">
-
                     <div id="content">
                         <g:layoutBody />
                     </div>
-
-                 </div>
                  <div id="footer">
                     <g:render template="/common/footer" />
                  </div>  <!--END #footer -->

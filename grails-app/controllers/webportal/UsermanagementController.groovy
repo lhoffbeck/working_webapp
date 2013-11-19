@@ -80,47 +80,48 @@ class UsermanagementController {
 
 
         if (request.method == 'POST') {
-            if(params.get('submitButton') == 'Filter')
+
+            // If the submit was caused by the dropdown change
+            if(!params.submitButton)
             {
-                userList = dao.getAllUsersInNestedGroup(URLEncoder.encode(params.get('district'),'UTF-8'))
+                userList = dao.getAllUsersInNestedGroup(URLEncoder.encode(params.district,'UTF-8'))
                 userList.each{
                     dao.getUserGroupInfo(it.getValue())
                 }
             }
-            if(params.get('submitButton') == 'View All')
+            if(params.submitButton == 'View All')
             {
                 userList = dao.getAllUsersInNestedGroup("Schools")
                 userList.each{
                     dao.getUserGroupInfo(it.getValue())
                 }
             }
-            else if(params.get('submitButton') == 'Save')
+            else if(params.submitButton == 'Save')
             {
                 def user = new User()
 
                 params.each{ key, value ->
                     println key + " - " + value
                 }
-
                 
-                user.username = params.get('userName')
-                user.firstName = params.get('firstName')
-                user.lastName = params.get('lastName')
-                user.displayName = params.get('displayName')
-                user.email = params.get('email')
-                if(params.get('oldDistrict')!=params.get('district'))
+                user.username = params.userName
+                user.firstName = params.firstName
+                user.lastName = params.lastName
+                user.displayName = params.displayName
+                user.email = params.email
+                if(params.oldDistrict != params.district)
                 {
-                    dao.removeUserFromGroup(params.get('userName'),params.get('oldDistrict'))
-                    dao.addUserToGroup(params.get('userName'),params.get('district'))
+                    dao.removeUserFromGroup(params.userName,params.oldDistrict)
+                    dao.addUserToGroup(params.userName,params.district)
                 }
 
                 permList.each{
-                    dao.removeUserFromGroup(params.get('userName'),(String)it) //delete all, and than re add (no good way to keep track of a list i want to keep dynamic)
+                    dao.removeUserFromGroup(params.userName,(String)it) //delete all, and than re add (no good way to keep track of a list i want to keep dynamic)
                 }
 
                 params.each{ key, value ->
                     if(key ==~ /perm.*/){
-                        dao.addUserToGroup(params.get('userName'),key.replace("perm","").replace("_"," "))
+                        dao.addUserToGroup(params.userName,key.replace("perm","").replace("_"," "))
                     }
                 }
 
