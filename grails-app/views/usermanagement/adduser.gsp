@@ -23,7 +23,7 @@
       	<br/>
       	<br/>
 
-    	<g:form id="theform" class="simpleform wideForm" style="width: 400;" url="[controller:'usermanagement', action:'adduser']">
+    	<g:form id="theform" class="fancyForm" style="width: 400;" url="[controller:'usermanagement', action:'adduser']">
 
       		<h1 class="featuredarticle title" style="padding-left:65px;">ADD<span> an account</span> </h1><br/>
 

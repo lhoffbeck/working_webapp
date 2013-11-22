@@ -81,7 +81,7 @@ input[type=checkbox]:checked + label:before {
    height: 34px;
    }
 
-form { 
+.fancyForm { 
 	margin: 30px 0 0 0 ;
 }
 input { 
@@ -113,7 +113,7 @@ input {
 	border: 1px solid #9FBAC0; 
 	cursor: pointer; 
 }
-form, .fancyTable { 
+.fancyForm, .fancyTable { 
 	border-radius: 4px 4px 4px 4px; 
 	width: 350px; 
 	margin: 0 auto; 
@@ -126,7 +126,7 @@ form, .fancyTable {
 .wideForm{
 	width: 500;
 }
-form label { 
+.fancyForm label { 
 	display: block; 
 	margin-bottom: 5px; 
 	font-weight: bold; 

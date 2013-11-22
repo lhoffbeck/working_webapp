@@ -2,6 +2,10 @@ package webportal
 
 class UsermanagementController {
 
+    // memcached is a spring bean, this is it injected into this controller.
+    def memcachedClient
+    static final int expiry = 1800  // memcached stuff will be kept in memory for 1800s
+
 
     def index(){ }
 
@@ -16,12 +20,50 @@ class UsermanagementController {
     }
 
 
+    /*
+    *   Checks to see if an object is in memory. If so, it returns that object. If not, it performs the appropriate 
+    *   Crowd REST call (I guess it could be any closure you pass in, really. Here it's just going to be Crowd though),
+    *   caches the object in memory, and returns the object.
+    *
+    *   tl;dr this should be used to retrieve any object list that needs to be persisted between multiple view form submits.
+    */
+    private def checkMemcachedForObject(objectName, closure){
+
+        def object
+
+        // if the grouplist isn't already cached in memory, cache it in memory. If it is, update the local variable.
+        def mem_obj = memcachedClient.get(objectName)
+        if(!mem_obj){
+            object = getClosure //
+            memcachedClient.set(objectName, expiry, object)
+        } else{
+            object = mem_obj
+        }
+
+        return object
+    }
+
+
     def adduser(){
 
         // get the information needed to populate the lists of district and permissions.
         def dao = new CrowdDAO()
-        def groupList = dao.getAllGroups("Schools")
-        def permList = dao.getAllGroups("Permissions")
+
+        def groupList = checkMemcachedForObject('groupList',{return dao.getAllGroups("Schools")})
+        throw new RuntimeException("Made it! list is: " + groupList.dump())
+        def permList 
+
+
+
+
+        // if the permission list isn't already cached in memory, cache it in memory. If it is, update the local variable.
+        def mem_permList = memcachedClient.get('permList')
+        if(!mem_permList){
+            permList = dao.getAllGroups("Permissions")
+            memcachedClient.set('permList', expiry, permList)
+        } else{
+            permList = mem_permList
+        }
 
 
     	// if this is the form submit
@@ -79,25 +121,24 @@ class UsermanagementController {
         def userList = []
         def selectedDistrict
 
+        // throw new RuntimeException(params.dump().toString())
+
 
         if (request.method == 'POST') {
 
             // If the submit was caused by the dropdown change
-            if(!params.submitButton)
+            if(!params.submitButton && ! params.usertable_username)
             {
                 selectedDistrict = params.district
                 userList = dao.getAllUsersInNestedGroup(URLEncoder.encode(params.district,'UTF-8'))
-                userList.each{
+                /*userList.each{
                     dao.getUserGroupInfo(it.getValue())
-                }
+                }*/
             }
             if(params.submitButton == 'View All')
             {
                 selectedDistrict = ''
                 userList = dao.getAllUsersInNestedGroup("Schools")
-                userList.each{
-                    dao.getUserGroupInfo(it.getValue())
-                }
             }
             else if(params.submitButton == 'Save')
             {
@@ -108,14 +149,17 @@ class UsermanagementController {
                 user.lastName = params.lastName
                 user.displayName = params.displayName
                 user.email = params.email
+
+                // change district logic
                 if(params.oldDistrict != params.district)
                 {
-                    dao.removeUserFromGroup(params.userName,params.oldDistrict)
-                    dao.addUserToGroup(params.userName,params.district)
+                    dao.removeUserFromGroup(params.userName, params.oldDistrict)
+                    dao.addUserToGroup(params.userName, params.district)
                 }
 
+                // delete all, and than re add (no good way to keep track of a list i want to keep dynamic)
                 permList.each{
-                    dao.removeUserFromGroup(params.userName,(String)it) //delete all, and than re add (no good way to keep track of a list i want to keep dynamic)
+                    dao.removeUserFromGroup(params.userName,(String)it) 
                 }
 
                 params.each{ key, value ->
@@ -125,11 +169,24 @@ class UsermanagementController {
                 }
 
                 dao.updateUser(user)
-                           
+
+            }else if(params.usertable_username){
+
+                def selectedUser = dao.getUser(params.usertable_username)
+
+                // retrieve user group information , adds to user object.
+                dao.getUserGroupInfo(selectedUser) 
+
+                return [userMap:userMap, selectedUser:selectedUser, groupList:groupList, permList:permList, selectedDistrict:selectedDistrict]
             }
         } 
 
-        
-        return[userList:userList,groupList:groupList, permList:permList,selectedDistrict:selectedDistrict]
+        // convert user arraylist into a map so that it's easier to play with on the frontend
+        def userMap = [:]
+        userList.each{
+            userMap.put(it.key, it.value)
+        }
+
+        return[userMap:userMap, groupList:groupList, permList:permList, selectedDistrict:selectedDistrict]
     }
 }

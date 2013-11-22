@@ -54,7 +54,7 @@
 
   <h1 class="featuredarticle title" style="padding-left:65px;">Register<span> for an account</span> </h1><br/>
 
-  <g:form class="fancyTable" id="theform" url="[controller:'user',action:'register']">
+  <g:form class="fancyForm" id="theform" url="[controller:'user',action:'register']">
 
       <p>
         <label for="firstName">First Name:</label>
