@@ -57,18 +57,16 @@ class UserController {
                     // add the user to the pending users group, a level data admin will have to give them their group assignment.
                     assert dao.addUserToGroup(user.username, 'pending_approval') == true
 
-                    /*try{
+                    try{
                         sendMail {
                           to "lhoffbeck@leveldatainc.com"    
                           subject "You have pending user accounts to confirm"     
                           body "Account creation request from ${u.firstName} ${u.lastName}. Please log in to the web portal to confirm group membership."
                         }
                         println "email sent"
-                    }catch(Exception ex){ throw ex }*/
+                    }catch(Exception ex){ throw ex }
 
                     redirect(action:'pendingsuccess')
-
-                    // return "You will recieve an email from us when your account is ready to be used."
                 }
             }// end  "if user with username already exists in crowd"
             else{

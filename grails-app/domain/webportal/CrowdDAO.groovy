@@ -203,6 +203,8 @@ class CrowdDAO {
 
   def getAllUsersInGroup(groupname){
 
+    groupname = java.net.URLEncoder.encode(groupname, "UTF-8")
+
     def builder = new HTTPBuilder("${baseURL}/group/user/direct?groupname=${groupname}")
     builder.auth.basic appUser,appPas
 
@@ -243,6 +245,8 @@ class CrowdDAO {
 
   def getAllUsersInNestedGroup(groupname){
 
+    groupname = java.net.URLEncoder.encode(groupname, "UTF-8")
+
     def builder = new HTTPBuilder("${baseURL}/group/user/nested?groupname=${groupname}")
     builder.auth.basic appUser,appPas
 
@@ -281,8 +285,7 @@ class CrowdDAO {
 
   }
 
-  def getUserGroupInfo(user)
-  {
+  def getUserGroupInfo(user){
     def builder = new HTTPBuilder("${baseURL}/user/group/direct?username=${user.username}")
     builder.auth.basic appUser,appPas
 
@@ -294,27 +297,20 @@ class CrowdDAO {
         assert resp.status < 400
         
         def records = new XmlSlurper().parseText(groovy.xml.XmlUtil.serialize(xmlText))
-        def allRecords = records.group 
+        def allRecords = records.group
 
-        //get all permision groups (to exclude)
+        //get all permission groups (so can compare group info to permission groups)
         def permList = getAllGroups("Permissions")
 
         allRecords.each{
-          if(permList.contains(it.@name))
-          {
-            user.permisions.add(it.@name)
-          }
-          else
-          {
-            user.confirmedDistricts.add(it.@name)
-          }
-        }     
-      }
-     
+          permList.contains(it.@name) ? user.permissions.add(it.@name.toString()) : (user.district = it.@name.toString()) //user.confirmedDistricts.add(it.@name)
+        }
+      }  
+
       response.failure = { resp ->
         println 'request failed: ' + resp.status
         assert resp.status >= 400
-      }
+      }    
     }
   }
 
@@ -380,14 +376,7 @@ class CrowdDAO {
         user.displayName = userRecord."display-name"
         user.email = userRecord.email
         userRecord.attributes.attribute.each{ 
-          if( it.@name == "district") 
-          {
-            user.district = it.values
-          }
-          else if (it.@name != "requiresPasswordChange" && it.@name != "passwordLastChanged") //does not seem like important information
-          {
-            user.attributes[ (String)it.@name ] = it.values
-          }
+          user.attributes."${it.@name.toString()}" = it.values.value.toString()
         }
         return user
       }

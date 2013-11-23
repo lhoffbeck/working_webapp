@@ -39,13 +39,13 @@
 
 			<div class="checkbox">
 				<g:checkBox style="border:none;box-shadow:none;" id="check1" name="permOperational_Changes"/>
-				<label for="check1" class="ckbx" >Operational Changes</label>
+				<label for="check1" class="ckbx">Operational Changes</label>
 				<br>
 				<g:checkBox style="border:none;box-shadow:none;" id="check2" name="permReports"/>				
-				<label for="check2" class="ckbx" >Reports</label>
+				<label for="check2" class="ckbx">Reports</label>
 				<br>
 				<g:checkBox style="border:none;box-shadow:none;" id="check3" name="permNotifications"/>
-				<label for="check3" class="ckbx" >Notifications</label>
+				<label for="check3" class="ckbx">Notifications</label>
 			</div>
 
 			<g:submitButton class="button-link" name="submitButton" value="Create!" />

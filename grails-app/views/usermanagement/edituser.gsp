@@ -102,22 +102,25 @@
         }
 
     </style>
+    <title>Add a User</title>
 </head>
 <body>
-
-    <g:if test="selectedDistrict != null">
-        <script type="text/javascript">
-            $("#hide").css("display","block");
-            $("#show").css("display","none");
-            $("#districtPicker").css("display","none");
-        </script>
+    <br/>
+    <br/>
+    <g:if test="${ flash.message }" >
+        <div id="successMessage">${ flash.message }</div>
     </g:if>
+
+
    
     <div id="all">
 
+        <h1 class="featuredarticle title" style="text-align:center;">Edit<span> a user account</span> </h1><br/>
+
         <div id="districtPicker">
+
             <g:form  class="fancyForm" url="[controller:'usermanagement', action:'edituser']" id="filter" style="width:275px;">
-                <g:select name="district" class="dropdown" from="${groupList}" value="${selectedDistrict != null ? selectedDistrict : ''}" onchange="this.form.submit()" noSelection="${['null':'Select a district']}"/>
+                <g:select name="district" class="dropdown" from="${districtList}" value="${selectedDistrict ? selectedDistrict : ''}" onchange="this.form.submit()" noSelection="${['':'Select a district']}"/>
                 <br/>
                 <br/>
                 <h1 class="featuredarticle title" style="padding-left:107.5px;">OR</h1>
@@ -134,34 +137,82 @@
         <br/>
         <br/>
 
-        <g:if test="${userMap}">
+        <!--<g:if test="${userMap && userMap.size == 0}">
+            <h2>There are no users currently in this district</h2>
+        </g:if>-->
 
-            <g:form url="[controller:'usermanagement', action:'edituser']" id="userform" name="userform">
+        <div class="wrapper" style="margin: 0 auto; width: 850px">
+            <g:if test="${userMap}">
 
-                <g:hiddenField name="usertable_username" id="usertable_username" value=""/>
-                <table id="userTable" class="">
+                <div class="leftColumn" style="width: 350px; float:left;">
 
-                    <tr>
-                        <th>First</th>
-                        <th>Last</th>
-                        <th>Email</th>
-                    </tr>
+                    <g:form url="[controller:'usermanagement', action:'edituser']" id="userform" name="userform">
 
-                    <!-- counter used to do odd/even row coloring -->
-                    <g:def var="counter" value="${1}" /> 
+                        <g:hiddenField name="usertable_username" id="usertable_username" value=""/>
+                        <g:hiddenField name="district" id="district" value="${selectedDistrict}"/>
+                        <table id="userTable" class="">
 
-                    <g:each var="user" in="${userMap}">
-                        <tr id="${user.value.username.split('\\@')[0]}" onclick="submitUserTable(this);" class="${counter++ % 2 == 0 ? 'alt' : ''}" >
-                            <td id="firstName">${user.value.firstName}</td>
-                            <td id="lastName">${user.value.lastName}</td>
-                            <td id="email">${user.value.email}</td>
-                        </tr>
-                    </g:each>
-                </table>
-            </g:form>
-        </g:if>
+                            <tr>
+                                <th>First</th>
+                                <th>Last</th>
+                                <th>Email</th>
+                            </tr>
+
+                            <!-- counter used to do odd/even row coloring -->
+                            <g:def var="counter" value="${1}" /> 
+
+                            <g:each var="user" in="${userMap}">
+                                <tr id="${user.value.username.split('\\@')[0]}" onclick="submitUserTable(this);" class="${counter++ % 2 == 0 ? 'alt' : ''}" >
+                                    <td id="firstName">${user.value.firstName}</td>
+                                    <td id="lastName">${user.value.lastName}</td>
+                                    <td id="email">${user.value.email}</td>
+                                </tr>
+                            </g:each>
+                        </table>
+                    </g:form>
+                </div>
+            </g:if>
         <g:if test="${selectedUser}">
-        <script type="text/javascript">alert("hellooooooo");</script>
+            <div class="rightColumn" style="width: 400px; margin-left: 400px;">
+                <g:form class="fancyForm" url="[controller:'usermanagement', action:'edituser']" id="edit">
+                    <g:hiddenField name="district" id="district" value="${selectedDistrict}"/>
+                    <p>
+                        <label for="userName">Username: </label>
+                        <g:textField name="userName" value="${selectedUser.username}" readonly style="background-color:#CFCFCF;"/>
+                    <p>
+                        <label for="displayName">Display Name: </label>
+                        <g:textField name="displayName" value="${selectedUser.displayName}" />
+                    <p>
+                        <label for="firstName">First Name:</label>
+                        <g:textField name="firstName" value="${selectedUser.firstName}"/>
+                    <p>
+                        <label for="lastName">Last Name:</label>
+                        <g:textField name="lastName" value="${selectedUser.lastName}" />
+                    <p>
+                        <label for="email">Email:</label>
+                        <g:textField name="email" value="${selectedUser.email}" />
+                        <g:hiddenField name="oldDistrict" value="${selectedUser.district}"/>
+                    <p>
+                        <label for="group">District:</label>
+                        <g:select name="newDistrict" from="${districtList}" class="dropdown" noSelection="${['null':'Select a district']}" value="${selectedUser.district}"/>
+                    <br/>
+                    <br/>
+
+                    <div class="checkbox">
+                        <g:each var="${perm}" in="${permList}">
+                            <g:def var="perm_no_spaces" value="${perm.toString().replace(' ','_')}" /> 
+
+                            <g:hiddenField name="old_perm${perm_no_spaces}" value="${userPerms.contains(perm)}"/>
+                            <g:checkBox style="border:none;box-shadow:none;" id="perm${perm_no_spaces}" name="perm${perm_no_spaces}" checked="${userPerms.contains(perm)}"/>
+                            <label for="perm${perm_no_spaces}" class="ckbx">${perm}</label>
+                            <br/>
+                        </g:each>
+                    </div>
+
+                    </br>
+                    <g:submitButton name="submitButton" class="button-link" value="Save" />
+                </g:form>
+            </div>
         </g:if>
     </div>
     
@@ -180,5 +231,12 @@
         });
 
     </script>
+    <g:if test="${userMap}">
+        <script type="text/javascript">
+            $("#show").css("display","block");
+            $("#hide").css("display","none");
+            $("#districtPicker").css("display","none");
+        </script>
+    </g:if>
 </body>
 </html>

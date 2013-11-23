@@ -2,11 +2,6 @@ package webportal
 
 class UsermanagementController {
 
-    // memcached is a spring bean, this is it injected into this controller.
-    def memcachedClient
-    static final int expiry = 1800  // memcached stuff will be kept in memory for 1800s
-
-
     def index(){ }
 
     def groupassignment(){
@@ -14,57 +9,17 @@ class UsermanagementController {
     	def dao = new CrowdDAO()
 
     	def allPendingUsers = dao.getAllUsersInGroup("pending_approval")
-    	def groupList = dao.getAllGroups("Schools")
+    	def districtList = dao.getAllGroups("Schools")
 
-    	return [ userList:allPendingUsers, groupList:groupList ]
+    	return [ userList:allPendingUsers, districtList:districtList ]
     }
-
-
-    /*
-    *   Checks to see if an object is in memory. If so, it returns that object. If not, it performs the appropriate 
-    *   Crowd REST call (I guess it could be any closure you pass in, really. Here it's just going to be Crowd though),
-    *   caches the object in memory, and returns the object.
-    *
-    *   tl;dr this should be used to retrieve any object list that needs to be persisted between multiple view form submits.
-    */
-    private def checkMemcachedForObject(objectName, closure){
-
-        def object
-
-        // if the grouplist isn't already cached in memory, cache it in memory. If it is, update the local variable.
-        def mem_obj = memcachedClient.get(objectName)
-        if(!mem_obj){
-            object = getClosure //
-            memcachedClient.set(objectName, expiry, object)
-        } else{
-            object = mem_obj
-        }
-
-        return object
-    }
-
 
     def adduser(){
 
         // get the information needed to populate the lists of district and permissions.
         def dao = new CrowdDAO()
-
-        def groupList = checkMemcachedForObject('groupList',{return dao.getAllGroups("Schools")})
-        throw new RuntimeException("Made it! list is: " + groupList.dump())
-        def permList 
-
-
-
-
-        // if the permission list isn't already cached in memory, cache it in memory. If it is, update the local variable.
-        def mem_permList = memcachedClient.get('permList')
-        if(!mem_permList){
-            permList = dao.getAllGroups("Permissions")
-            memcachedClient.set('permList', expiry, permList)
-        } else{
-            permList = mem_permList
-        }
-
+        def districtList = dao.getAllGroups("Schools")
+        def permList = dao.getAllGroups("Permissions")
 
     	// if this is the form submit
     	if (request.method == 'POST') {
@@ -86,14 +41,14 @@ class UsermanagementController {
             // if saving the user to the database succeded
             if(!pendUser.hasErrors()){
                 sendTokenEmail(pendUser.email, pendUser.token)
-                flash.message = "User with email ${pendUser.email} was successfuly created!"
+                flash.message = "User with email ${pendUser.email} was successfully created!"
             }else{
                 flash.message = ""
-                render(view: 'adduser', model:[pendUser: pendUser,groupList:groupList, permList:permList])
+                render(view: 'adduser', model:[pendUser: pendUser,districtList:districtList, permList:permList])
             }
     	} 
 
-	    return [groupList:groupList, permList:permList]
+	    return [districtList:districtList, permList:permList]
     }
 
 
@@ -107,86 +62,126 @@ class UsermanagementController {
                 multipart true
                 to emailAddress   
                 subject "Your Account Is Ready!"     
-                body(view:"/mail/confirmation",model:[content:content])
+                body(view:"/mail/confirmation",model:[content: content])
             }
             println "email sent"
         }catch(Exception ex){ throw ex }
     }
 
+    private def Map convertToMap(list){
+        // convert user arraylist into a map so that it's easier to play with on the frontend
+        def map = [:]
+        list.each{
+            map.put(it.key, it.value)
+        }
+        return map
+    }
+
+    private def Map getUserMap(params, dao){
+        if(!params.district || params.submitButton == 'View All'){
+            return convertToMap(dao.getAllUsersInNestedGroup("Schools"))
+        }
+        else{
+            return convertToMap(dao.getAllUsersInNestedGroup(params.district))
+        } 
+    }
+
     def edituser(){
 
         def dao = new CrowdDAO()
-        def groupList = dao.getAllGroups("Schools")
-        def permList = dao.getAllGroups("Permissions")
-        def userList = []
-        def selectedDistrict
+        def districtList = dao.getAllGroups("Schools")  
 
-        // throw new RuntimeException(params.dump().toString())
+        flash.message = ""
 
 
         if (request.method == 'POST') {
 
+            def selectedDistrict
+
             // If the submit was caused by the dropdown change
-            if(!params.submitButton && ! params.usertable_username)
+            if(params.district && params.submitButton != 'View All' && !params.usertable_username)
             {
-                selectedDistrict = params.district
-                userList = dao.getAllUsersInNestedGroup(URLEncoder.encode(params.district,'UTF-8'))
-                /*userList.each{
-                    dao.getUserGroupInfo(it.getValue())
-                }*/
+                return [districtList: districtList, userMap: getUserMap(params, dao), selectedDistrict: params.district]
             }
-            if(params.submitButton == 'View All')
+            else if(params.submitButton == 'View All')
             {
-                selectedDistrict = ''
-                userList = dao.getAllUsersInNestedGroup("Schools")
+                return [districtList: districtList, userMap: getUserMap(params, dao), selectedDistrict: '']
             }
+            else if(params.usertable_username){
+
+                //throw new RuntimeException(userList.dump())
+
+                def selectedUser = dao.getUser(params.usertable_username)
+
+                // retrieve user group information, adds to user object.
+                dao.getUserGroupInfo(selectedUser)
+
+                // get the permissions of the user
+                def permList = dao.getAllGroups("Permissions")
+                def userPerms = selectedUser.permissions
+
+                return [districtList: districtList, userMap: getUserMap(params, dao), selectedDistrict: params.district, selectedUser: selectedUser, permList: permList, userPerms: userPerms]
+            } // end else if this is response to click on user
             else if(params.submitButton == 'Save')
             {
+
+                //############################### update user information
                 def user = new User()
-                
+
                 user.username = params.userName
                 user.firstName = params.firstName
                 user.lastName = params.lastName
                 user.displayName = params.displayName
                 user.email = params.email
 
-                // change district logic
-                if(params.oldDistrict != params.district)
+                dao.updateUser(user)
+                //#######################################################
+
+
+                //########################################## update user district
+                if(params.oldDistrict != params.newDistrict)
                 {
                     dao.removeUserFromGroup(params.userName, params.oldDistrict)
-                    dao.addUserToGroup(params.userName, params.district)
+                    dao.addUserToGroup(params.userName, params.newDistrict)
                 }
+                //###############################################################
 
-                // delete all, and than re add (no good way to keep track of a list i want to keep dynamic)
-                permList.each{
-                    dao.removeUserFromGroup(params.userName,(String)it) 
-                }
 
+                //####################################################### update user permissions
+                def oldPerms = []
+
+                // get the old permission values (they are hidden fields on the page) and remove any permissions that should be removed
                 params.each{ key, value ->
-                    if(key ==~ /perm.*/){
-                        dao.addUserToGroup(params.userName,key.replace("perm","").replace("_"," "))
+                    if(key ==~ /^old_perm.*$/ && value == 'true'){
+
+                        // permname might has underscores in the name if the permission has a space in the name (can't have a space in html id)
+                        def permName = key.replace('old_perm','').replace('_',' ')
+
+                        oldPerms.add(permName)
+                        if(!params."perm${permName.replace(' ','_')}"){
+                            dao.removeUserFromGroup(params.userName, permName) 
+                        }
+                    } 
+                }
+                params.each{ key, value ->
+                    if(key ==~ /^perm.*$/){
+                        def permName = key.replace('perm','').replace('_',' ')
+                        
+                        // if a new permission was added, add it.
+                        if(value == 'on' && !oldPerms.contains(permName)){
+                            "adding permission $permName"
+                            dao.addUserToGroup(params.userName,key.replace("perm","").replace("_"," "))
+                        }
                     }
                 }
+                //#################################################################################
 
-                dao.updateUser(user)
+                flash.message = "User ${user.displayName} was successfully updated"
+                return [districtList: districtList, userMap: getUserMap(params, dao), selectedDistrict: params.district] 
+            } // end else if this is a user save
+        } // end if POST
 
-            }else if(params.usertable_username){
-
-                def selectedUser = dao.getUser(params.usertable_username)
-
-                // retrieve user group information , adds to user object.
-                dao.getUserGroupInfo(selectedUser) 
-
-                return [userMap:userMap, selectedUser:selectedUser, groupList:groupList, permList:permList, selectedDistrict:selectedDistrict]
-            }
-        } 
-
-        // convert user arraylist into a map so that it's easier to play with on the frontend
-        def userMap = [:]
-        userList.each{
-            userMap.put(it.key, it.value)
-        }
-
-        return[userMap:userMap, groupList:groupList, permList:permList, selectedDistrict:selectedDistrict]
+        // if not a post request (i.e. initial pageload) just return the district list
+        return [districtList: districtList]
     }
 }
