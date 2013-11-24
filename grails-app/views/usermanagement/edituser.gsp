@@ -4,6 +4,7 @@
     <meta name="layout" content="admin"/> 
 
     <link rel="stylesheet" href="${resource(dir:'css',file:'form_style.css')}" />
+    <link rel="stylesheet" href="${resource(dir:'css',file:'edituser.css')}" />
     <script type="text/javascript">
         $(document).ready(function(){
             $("#hide").click(function(){
@@ -33,75 +34,8 @@
             document.getElementById('usertable_username').value = username;
             document.forms['userform'].submit(); 
         }
-
     </script>
-
-     <style type="text/css">
-
-        #userTable
-        {
-            font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
-            width:100%;
-            border-collapse:collapse;
-
-            /* make the text nonselectable */
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            cursor: default;
-        }
-        #userTable td, #userTable th 
-        {
-            font-size:1em;
-            border:3px solid #8CC13F;
-            padding:3px 7px 2px 7px;
-        }
-        #userTable th 
-        {
-            font-size:1.1em;
-            text-align:left;
-            padding-top:5px;
-            padding-bottom:4px;
-            background-color:#8CC13F;
-            color:#ffffff;
-        }
-        .alt 
-        {
-            background-color:#D1E6B2;
-        }
-
-        .hover { 
-            background-color: #A3A3A3; 
-        }
-
-        tr:not(:first-child):hover {
-            cursor: pointer;
-        }
-
-        #column{
-            float: left;
-        }
-
-        .sliderControls{
-            width:165px;
-            margin: 0 auto; 
-        }
-
-        .hidden {
-            display: none
-        }
-
-        #all{
-            padding-top:20px;
-        }
-        #show{
-            display: none;
-        }
-
-    </style>
+    
     <title>Add a User</title>
 </head>
 <body>
