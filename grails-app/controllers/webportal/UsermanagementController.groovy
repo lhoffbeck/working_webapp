@@ -52,7 +52,7 @@ class UsermanagementController {
     }
 
 
-    private def sendTokenEmail(emailAddress,  token)
+    private def sendTokenEmail(emailAddress, token)
     {
 
         def content = "Your Level Data web portal account is ready! Please follow the following link to complete the sign up process: " + 
