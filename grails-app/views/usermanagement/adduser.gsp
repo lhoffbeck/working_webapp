@@ -34,7 +34,7 @@
 
 	        <p>
 	       		<label for="group">District:</label>
-				<g:select name="district" from="${groupList}" class="dropdown" value="${PendingUser?.district}" noSelection="${["":'Select a district']}"/>
+				<g:select name="district" from="${districtList}" class="dropdown" value="${PendingUser?.district}" noSelection="${["":'Select a district']}"/>
 			</p>
 
 			<div class="checkbox">

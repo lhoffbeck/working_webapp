@@ -48,6 +48,7 @@ class UsermanagementController {
             }
     	} 
 
+
 	    return [districtList:districtList, permList:permList]
     }
 

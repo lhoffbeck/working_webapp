@@ -136,7 +136,7 @@ class UserController {
 
                 // set up the response message
                 def pageTitle = "Email Sent!"
-                def titleMessage = "Password Reset Email Sent"
+                def titleMessage = "Password reset email sent"
                 def message = """You should recieve an email from us in a couple of minutes. Follow the link in the email to reset your password."""
                 forward(action: "message", params:[titleMessage:titleMessage, message:message, title:pageTitle])
             }
@@ -163,18 +163,20 @@ class UserController {
             // if the user already exists in Crowd and their token matches, reset their password
             if(dao.getUser(email) != null && params.token.equals(getPasswordResetToken(email))){
 
+                dao.updatePassword(params.password, email)
+
                 // the response message
-                def pageTitle = "Reset Email Sent"
-                def titleMessage = "Password Reset Email Sent"
-                def message = """You should recieve an email from us in a couple of minutes. Follow the link in the email to reset your password."""
+                def pageTitle = "Password Changed"
+                def titleMessage = "Your password was successfully changed!"
+                def message = """You can <a href='/webportal/login/index'>log in</a> to your Level Data Web Portal account with your new password."""
                 forward(action: "message", params:[titleMessage:titleMessage, message:message, title:pageTitle])
             }
             else{
+
                 // the response message
                 def pageTitle = "Unsuccessful Request"
-                def titleMessage = "Oh no!"
-                def message = """It looks like we don't have your email address in our system. 
-                                Please make sure that you entered the correct email address, or contact support@leveldatainc.com"""
+                def titleMessage = "Password not changed"
+                def message = """There was an error resetting your password. Please contact support@leveldatainc.com"""
                 forward(action: "message", params:[titleMessage:titleMessage, message:message, title:pageTitle])
             }
         }

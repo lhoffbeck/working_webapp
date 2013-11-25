@@ -41,11 +41,11 @@
             #inputs input:focus
             {
                 background-color: #fff;
-                border-color: #e8c291;
+                border-color: #ADCAED;
                 outline: none;
-                -moz-box-shadow: 0 0 0 1px #e8c291 inset;
-                -webkit-box-shadow: 0 0 0 1px #e8c291 inset;
-                box-shadow: 0 0 0 1px #e8c291 inset;
+                -moz-box-shadow: 0 0 0 1px #ADCAED inset;
+                -webkit-box-shadow: 0 0 0 1px #ADCAED inset;
+                box-shadow: 0 0 0 1px #ADCAED inset;
             }
 
             #actions a
