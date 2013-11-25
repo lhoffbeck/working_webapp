@@ -176,6 +176,25 @@
              }
              
 
+             #foot{
+                background-color: #8BB757;
+                display: block;
+                background-image: url(${resource(dir:'images',file:'leather.png')});
+                line-height: 1.6em;
+                font-size: 12px;
+                color:white;
+                text-shadow: -1px -1px 1px rgba(0,0,0,0.5);
+
+                width:100%;
+                text-align: center;
+             }
+
+             #foot a{
+                color: #ddecc5;
+                text-decoration: none;
+                outline: none;
+             }
+
          </style>
      </head>
      <body>
@@ -207,18 +226,19 @@
                          </div>
                      </div>
                  </div>
-                 <div id"backgroudGradient">
-                     <div id="content">
+                 <div id="backgroudGradient">
+                     <div id="content" style="padding-bottom:75px;">
                         <g:layoutBody />
-                     </div>
-                     <div id="footer">
-                        <g:render template="/common/footer" />
-                     </div>  <!--END #footer -->
-                </div>
+                    </div>
+
             </crowdAuth:ifAllGranted>
         </crowdAuth:isAuthenticated>
         <crowdAuth:isNotAuthenticated>
             <p>You do not have permission to view this page. Please <g:link controller="login">Login</g:link> or contact helpdesk@leveldatainc.com.</p>
         </crowdAuth:isNotAuthenticated>
+        <div id="foot">
+            <g:render template="/common/footer" />
+        </div>  <!--END #footer -->
+
      </body>
 </html>
