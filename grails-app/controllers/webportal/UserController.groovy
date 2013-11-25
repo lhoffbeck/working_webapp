@@ -7,13 +7,14 @@ import static groovyx.net.http.Method.POST
 import static groovyx.net.http.Method.GET
 import groovy.xml.*
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler
+import java.text.SimpleDateFormat 
 
 class UserController {
  
     def register = {
 
         // if form submit on registration page and the honeypot wasn't filled out by spambots
-        if (request.method == 'POST' && !params.body) {
+        if (request.method == 'POST' && !params.userphone) {
 
             // data access object fro crowd
             def dao = new CrowdDAO()
@@ -47,7 +48,11 @@ class UserController {
                         assert dao.addUserToGroup(user.username, perm.permName) == true
                     }
 
-                    redirect(action:'success')
+                    // the response message
+                    def pageTitle = "Success!"
+                    def titleMessage = "Your account was successfully created!"
+                    def message = """You can now <a href='/webportal/login/index'>log in</a> to your Level Data Web Portal account."""
+                    forward(action: "message", params:[titleMessage:titleMessage, message:message, title:pageTitle])
 
                 }else{ // if the user's token doesn't match, stick him in the default group.
 
@@ -66,11 +71,21 @@ class UserController {
                         println "email sent"
                     }catch(Exception ex){ throw ex }
 
-                    redirect(action:'pendingsuccess')
+                    // the response message
+                    def pageTitle = "Request Sent"
+                    def titleMessage = "Thanks for requesting an account!"
+                    def message = """Since you didn't use a token to create your account, a Level Data administrator 
+                                    will have to confirm it. An email will be sent to you when your account is ready to be used."""
+                    forward(action: "message", params:[titleMessage:titleMessage, message:message, title:pageTitle])
                 }
             }// end  "if user with username already exists in crowd"
             else{
-                redirect(action:'failure')
+
+                // the response message
+                def pageTitle = "Account Already Exists"
+                def titleMessage = "An account with this email address already exists in our system."
+                def message = """Having troubles logging in? <a href='/webportal/user/forgotpassword'>Forgot your password?</a> or contact support@leveldatainc.com."""
+                forward(action: "message", params:[titleMessage:titleMessage, message:message, title:pageTitle])
             }
         } // end if this method was requested via POST
     } // end method register
@@ -81,4 +96,91 @@ class UserController {
 
     // failure occurs when a user is already in crowd and they try to create an account
     def failure = {}
+
+    private def sendPasswordResetEmail(email, token){
+
+        def content = """You can reset your password by clicking the following link:
+                    http://localhost:8080/webportal/user/resetpassword?token=${token}&email=${email}"""
+        try{
+            sendMail {     
+                multipart true
+                to email   
+                subject "Password Reset: Level Data Web Portal"     
+                body content
+            }
+            println "reset email sent to ${email}"
+        }catch(Exception ex){ throw ex }
+
+    }
+
+    // the token in the password reset email will be valid during the day that the email was sent.
+    private def String getPasswordResetToken(email){
+        def date = new Date()  
+        def sdf = new SimpleDateFormat("MM/dd/yyyy")  
+        def currDate = sdf.format(date)  
+
+        def saltyEmail = email + currDate
+        return saltyEmail.hashCode()
+    }
+
+    def forgotpassword = {
+
+        if(request.method == 'POST' && !params.userphone){
+            def dao = new CrowdDAO()
+
+            // if the user already exists in Crowd, send the password reset email.
+            if(dao.getUser(params.email)){
+
+                def email = params.email.trim()
+                sendPasswordResetEmail(email, getPasswordResetToken(email))
+
+                // set up the response message
+                def pageTitle = "Email Sent!"
+                def titleMessage = "Password reset email sent"
+                def message = """You should recieve an email from us in a couple of minutes. Follow the link in the email to reset your password."""
+                forward(action: "message", params:[titleMessage:titleMessage, message:message, title:pageTitle])
+            }
+            else{
+
+                // set up the response message
+                def pageTitle = "Email not Found"
+                def titleMessage = "Oh no!"
+                def message = """It looks like we don't have your email address in our system. Please make sure that you 
+                                entered the correct email address, or contact support@leveldatainc.com"""
+                forward(action: "message", params:[titleMessage:titleMessage, message:message, title:pageTitle])
+            }
+
+        }
+    }
+
+    def resetpassword = {
+
+        if(request.method == 'POST' && !params.userphone){
+
+            def dao = new CrowdDAO()
+            def email = params.email
+
+            // if the user already exists in Crowd and their token matches, reset their password
+            if(dao.getUser(email) != null && params.token.equals(getPasswordResetToken(email))){
+
+                dao.updatePassword(params.password, email)
+
+                // the response message
+                def pageTitle = "Password Changed"
+                def titleMessage = "Your password was successfully changed!"
+                def message = """You can <a href='/webportal/login/index'>log in</a> to your Level Data Web Portal account with your new password."""
+                forward(action: "message", params:[titleMessage:titleMessage, message:message, title:pageTitle])
+            }
+            else{
+
+                // the response message
+                def pageTitle = "Unsuccessful Request"
+                def titleMessage = "Password not changed"
+                def message = """There was an error resetting your password. Please contact support@leveldatainc.com"""
+                forward(action: "message", params:[titleMessage:titleMessage, message:message, title:pageTitle])
+            }
+        }
+    }
+
+    def message = {}
 }

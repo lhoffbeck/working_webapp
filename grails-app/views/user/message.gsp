@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Success!</title>
+  <title>${params.title}</title>
   <meta name="layout" content="login" />
   <style>
     .message{
@@ -12,10 +12,10 @@
 </head>
 <body>
     <div class="message"> 
-      <span class="title featuredarticle">An account with this email address already exists in our system.</span>
+      <span class="title featuredarticle">${params.titleMessage.decodeHTML()}</span>
       <br/>
       <br/>
-      Having troubles logging in? <a href="#">Reset your password</a> or contact support@leveldatainc.com.
+      ${params.message.decodeHTML()}
     </div>
 </body>
 </html>

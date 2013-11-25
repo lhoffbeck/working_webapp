@@ -1,6 +1,5 @@
 <html>
 <head>
-    <title>Edit User</title>      
     <meta name="layout" content="admin"/> 
 
     <link rel="stylesheet" href="${resource(dir:'css',file:'form_style.css')}" />
@@ -36,7 +35,7 @@
         }
     </script>
     
-    <title>Add a User</title>
+    <title>Edit User</title>      
 </head>
 <body>
     <br/>
@@ -44,8 +43,6 @@
     <g:if test="${ flash.message }" >
         <div id="successMessage">${ flash.message }</div>
     </g:if>
-
-
    
     <div id="all">
 

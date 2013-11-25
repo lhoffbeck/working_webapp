@@ -30,13 +30,7 @@
                 height: auto;
                 margin: 0 auto -50px;
             } 
-            #loginDialog{
-                height: 300px;
-                float: right;
-                margin-top: 150px;
-                border: 0px solid black;
-                text-align: center;
-            }
+
          #rt-main-container a, #rt-main-container h1 span, #rt-main-container .module-title .title span,#rt-body-surround .sprocket-lists .sprocket-lists-container li.active .sprocket-lists-title, body #roksearch_results h3, body #roksearch_results a, .item-title {color:#A3CD65;}
          #rt-navigation, #rt-navigation .rt-menubar ul.menutop li.active {background-color:#8cc13f;}
          #rt-main-container .readon span, #rt-main-container .readon .button, .component-content .formelm-buttons button {background-color:#8cc13f;}

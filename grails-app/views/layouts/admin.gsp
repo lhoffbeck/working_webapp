@@ -149,9 +149,9 @@
              #footer{
                  position: absolute;
                  bottom: 0px;
-                 width: 866px;
-                 margin: 0px auto;
-                 display: none;
+
+                 width: 100%;
+                 margin: 0 auto;
              }
              
 

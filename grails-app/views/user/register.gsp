@@ -31,11 +31,12 @@
     if(!errorsAreShowing){
       var metrics = [
         [ '.required', 'presence', 'Cannot be empty' ],
-        [ '#firstName', /^[^!@#$%^&*();]*$/ , 'Invalid characters in first name' ],
+        [ '#firstName', /^[^!@#$%^&*();]*$/ , 'First name can\'t contain !@#$%^&*()\\/;' ],
         [ '#firstName', 'between:2:50', 'Must be between 2 and 50 characters long' ],
-        [ '#lastName', /^[^!@#$%^&*();]*$/ , 'Invalid characters in first name' ],
+        [ '#lastName', /^[^!@#$%^&*();\\]*$/ , 'Last name can\'t contain !@#$%^&*()\\/;' ],
         [ '#lastName', 'between:2:75', 'Must be between 2 and 75 characters long' ],
         [ '#email', 'email' , 'Invalid email address' ],
+        [ '#email', /^[^();]*$/ , 'Email address can\'t contain ;)(' ],
         [ '#password', 'between:6:20', 'Must be between 6 and 20 characters long' ],
         [ '#confirm', 'same-as:#password', 'Passwords dont match' ]
       ];
@@ -57,22 +58,22 @@
   <g:form class="fancyForm" id="theform" url="[controller:'user',action:'register']">
 
       <p>
-        <label for="firstName">First Name:</label>
+        <label for="firstName">First Name</label>
         <g:textField name="firstName" id="firstName" value="${user?.firstName}" class="required"/>
       </p>
 
       <p>
-        <label for="lastName">Last Name:</label>
+        <label for="lastName">Last Name</label>
         <g:textField name="lastName" id="lastName" value="${user?.lastName}" class="required" />
       </p>
 
       <p>
-        <label for="email">Email (this will be your username):</label>
+        <label for="email">Email (this will be your username)</label>
         <g:textField name="email" id="email" value="${user?.email}" class="required" />
       </p>
      
       <p>
-        <label for="password">Password:</label>
+        <label for="password">Password</label>
         <g:passwordField name="password" id="password" class="required" />
       </p>
      
@@ -98,7 +99,7 @@
 
       <div id="userphone">
         If you can see this field, don't fill it out.
-        <input type="text" name="body" value="" />
+        <input type="text" name="userphone" value="" />
       </div>
 
   </g:form>
