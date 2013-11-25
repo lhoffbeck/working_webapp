@@ -132,6 +132,28 @@
                 display: inline-block;
              }
 
+             #foot{
+                background-color: #8BB757;
+                display: block;
+                background-image: url(${resource(dir:'images',file:'leather.png')});
+                line-height: 1.6em;
+                font-size: 12px;
+                color:white;
+                text-shadow: -1px -1px 1px rgba(0,0,0,0.5);
+
+
+                margin: 0;
+                padding: 0;
+                border: 0;
+                outline: 0;
+             }
+
+             #foot a{
+                color: #ddecc5;
+                text-decoration: none;
+                outline: none;
+             }
+
          </style>
          <script type="text/javascript">
             $(document).ready(function() {
@@ -168,7 +190,7 @@
                     <div id="content">
                         <g:layoutBody />
                     </div>
-                 <div id="footer">
+                 <div id="foot">
                     <g:render template="/common/footer" />
                  </div>  <!--END #footer -->
             </crowdAuth:ifAllGranted>
