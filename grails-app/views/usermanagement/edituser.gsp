@@ -72,7 +72,7 @@
             <h2>There are no users currently in this district</h2>
         </g:if>-->
 
-        <div class="wrapper" style="margin: 0 auto; width: 850px">
+        <div class="wrapper" style="margin: 0 auto; width: 850px; display:block;">
             <g:if test="${userMap}">
 
                 <div class="leftColumn" style="width: 350px; float:left;">
@@ -108,10 +108,10 @@
                 <g:form class="fancyForm" url="[controller:'usermanagement', action:'edituser']" id="edit">
                     <g:hiddenField name="district" id="district" value="${selectedDistrict}"/>
                     <p>
-                        <label for="userName">Username: </label>
+                        <label for="userName">Username:</label>
                         <g:textField name="userName" value="${selectedUser.username}" readonly style="background-color:#CFCFCF;"/>
                     <p>
-                        <label for="displayName">Display Name: </label>
+                        <label for="displayName">Display Name:</label>
                         <g:textField name="displayName" value="${selectedUser.displayName}" />
                     <p>
                         <label for="firstName">First Name:</label>

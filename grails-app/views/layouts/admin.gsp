@@ -164,8 +164,15 @@
                 color:white;
                 text-shadow: -1px -1px 1px rgba(0,0,0,0.5);
 
-                width:100%;
                 text-align: center;
+
+                z-index:9999;
+
+                /*width:100%;
+                position: absolute;
+                height: 80px;
+                clear:both;
+                top:100%;*/
              }
 
              #foot a{
@@ -174,47 +181,63 @@
                 outline: none;
              }
 
+             #container {
+                height:auto;
+                width:100%;
+                border-collapse:collapse;
+                display : table;
+            }
+
+            .foot {
+                display : table-row;
+                vertical-align : bottom;
+                height : 1px;
+            }
+
          </style>
      </head>
      <body>
-        <crowdAuth:isAuthenticated>
-            <crowdAuth:ifAllGranted group="Admins">
-                 <div id="topBar"/>
-                     <div id="greenNav">
-                         <div id="innerBackNav">
-                             <div id="mainNav">
-                                <div id="logo">
-                                    <img src="/webportal/static/images/logo.png" />
-                                </div>
-                                <ul>
-                                    <li id="userManagement">
-                                        <a href="/webportal/usermanagement/index" style="color:white;"> USER MANAGEMENT</a>
-                                        <ul>
-                                           <li><g:link controller="usermanagement" action="adduser">Add a User</g:link></li>
-                                           <li><g:link controller="usermanagement" action="edituser">Pending Users</g:link></li>
-                                       </ul>
-                                    </li>
-                                    <li id="reports">
-                                        <a href="/webportal/usermanagement/index" style="color:white;"> REPORTS</a>
-                                    </li>
-                                </ul>
+        <div id="container">
+            <crowdAuth:isAuthenticated>
+                <crowdAuth:ifAllGranted group="Admins">
+                     <div id="topBar"/>
+                         <div id="greenNav">
+                             <div id="innerBackNav">
+                                 <div id="mainNav">
+                                    <div id="logo">
+                                        <img src="/webportal/static/images/logo.png" />
+                                    </div>
+                                    <ul>
+                                        <li id="userManagement">
+                                            <a href="/webportal/usermanagement/index" style="color:white;"> USER MANAGEMENT</a>
+                                            <ul>
+                                               <li><g:link controller="usermanagement" action="adduser">Add a User</g:link></li>
+                                               <li><g:link controller="usermanagement" action="edituser">Pending Users</g:link></li>
+                                           </ul>
+                                        </li>
+                                        <li id="reports">
+                                            <a href="/webportal/usermanagement/index" style="color:white;"> REPORTS</a>
+                                        </li>
+                                    </ul>
+                                 </div>
                              </div>
                          </div>
                      </div>
-                 </div>
-                 <div id="backgroudGradient">
-                     <div id="content" style="padding-bottom:75px;">
-                        <g:layoutBody />
-                    </div>
+                     <div id="backgroudGradient">
+                         <div id="content" style="padding-bottom:75px;">
+                            <g:layoutBody />
+                        </div>
 
-            </crowdAuth:ifAllGranted>
-        </crowdAuth:isAuthenticated>
-        <crowdAuth:isNotAuthenticated>
-            <p>You do not have permission to view this page. Please <g:link controller="login">Login</g:link> or contact helpdesk@leveldatainc.com.</p>
-        </crowdAuth:isNotAuthenticated>
-        <div id="foot">
-            <g:render template="/common/footer" />
-        </div>  <!--END #footer -->
+                </crowdAuth:ifAllGranted>
+            </crowdAuth:isAuthenticated>
+            <crowdAuth:isNotAuthenticated>
+                <p>You do not have permission to view this page. Please <g:link controller="login">Login</g:link> or contact helpdesk@leveldatainc.com.</p>
+            </crowdAuth:isNotAuthenticated>
 
+
+            <!--<div id="foot" class="foot">
+                <g:render template="/common/footer" />
+            </div>  <!--END #footer -->
+        </div>
      </body>
 </html>

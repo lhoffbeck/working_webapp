@@ -15,7 +15,7 @@
         <style>
             .inputs
             {
-                background: #f1f1f1 url(../images/login-sprite.png) no-repeat;
+                background: #f1f1f1 url(${resource(dir:'images',file:'login-sprite.png')}) no-repeat;
                 padding: 15px 15px 15px 30px;
                 margin: 0 0 10px 0;
                 width: 200px; 
@@ -58,9 +58,26 @@
                 left:200px;
                 top: 100px;
             }
+
+            .login_error li{
+                list-style-type: none;
+                position:relative;
+                left:150px;
+                top:50px;
+                background-color: #FF4D4D;
+                width:300px;
+            }
+
         </style>
     </head>
     <body>
+
+        <g:hasErrors bean="${command}">
+            <div class="login_error">
+                <g:renderErrors bean="${command}" as="list"/>
+            </div>
+        </g:hasErrors>
+
         <crowdAuth:isNotAuthenticated>
             <div id="login">    
                 <g:form action="login" method="post" id="login" style="border:none;background-color:inherit;">

@@ -82,6 +82,33 @@
          #rt-footer-surround .title, #rt-footer-surround .paneltitle, #rt-footer-surround .panelsubtitle {text-shadow: -1px 1px 0 #8BB757, -3px 3px 0 rgba(0,0,0,0.15);}
          #rt-footer-surround .box1 a, #rt-footer-surround .box1 .title span, #rt-footer-surround .box4 a, #rt-footer-surround .box4 .title span {color:#c6e09f;}
          #rt-footer-surround .box4 .title, #rt-footer-surround .box1 .title {text-shadow: -1px 1px 0 #A3CD65, -3px 3px 0 rgba(0,0,0,0.15);}
+
+
+         #foot{
+            background-color: #8BB757;
+            display: block;
+            background-image: url(${resource(dir:'images',file:'leather.png')});
+            line-height: 1.6em;
+            font-size: 12px;
+            color:white;
+            text-shadow: -1px -1px 1px rgba(0,0,0,0.5);
+
+            width:100%;
+            text-align: center;
+         }
+
+         #foot a{
+            color: #ddecc5;
+            text-decoration: none;
+            outline: none;
+         }
+
+         #footContent{
+            padding-top:10px;
+            padding-bottom: 10px;
+            margin-top: 50px;
+         }
+
       </style>
    </head>
    <body class="presets-preset1 textshadow-1 font-family-diametric font-size-is-default logo-type-diametric logo-diametric-logostyle-style1 menu-type-fusionmenu inputstyling-enabled-1 typography-style-light col12 option-com-content menu-home apr12-home">
@@ -271,8 +298,7 @@
                <ul class="level2" style="width:180px;">
                   <li class="item199 f-submenu-item">
                      <a class="orphan item bullet" href="http://www.leveldatainc.com/contact-us/employment" id="a-1382024891926841" tabindex="-1">
-                     <span>
-                     Employment                                                             </span>
+                     <span>Employment</span>
                      </a>
                   </li>
                </ul>
@@ -280,7 +306,7 @@
             </div>
          </div>
       </div>
-    <div id="footer">
+    <div id="foot">
       <g:render template="/common/footer" />
     </div> <!-- END #footer -->
    </body>
