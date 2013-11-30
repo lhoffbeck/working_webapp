@@ -1,9 +1,9 @@
-<html>
-<head>
+
     <meta name="layout" content="admin"/> 
 
     <link rel="stylesheet" href="${resource(dir:'css',file:'form_style.css')}" />
     <link rel="stylesheet" href="${resource(dir:'css',file:'edituser.css')}" />
+
     <script type="text/javascript">
         $(document).ready(function(){
             $("#hide").click(function(){
@@ -34,75 +34,70 @@
             document.forms['userform'].submit(); 
         }
     </script>
-    
-    <title>Edit User</title>      
-</head>
-<body>
+  
+
     <br/>
     <br/>
     <g:if test="${ flash.message }" >
         <div id="successMessage">${ flash.message }</div>
     </g:if>
-   
-    <div id="all">
+    <h1 class="featuredarticle title" style="text-align:center;">Edit<span> a user account</span> </h1><br/>
 
-        <h1 class="featuredarticle title" style="text-align:center;">Edit<span> a user account</span> </h1><br/>
+    <div id="districtPicker">
 
-        <div id="districtPicker">
+        <g:form  class="fancyForm" url="[controller:'usermanagement', action:'edituser']" id="filter" style="width:275px;">
+            <g:select name="district" class="dropdown" from="${districtList}" value="${selectedDistrict ? selectedDistrict : ''}" onchange="this.form.submit()" noSelection="${['':'Select a district']}"/>
+            <br/>
+            <br/>
+            <h1 class="featuredarticle title" style="padding-left:107.5px;">OR</h1>
+            <div style="padding-left:30px;" id="buttonContainer">
+                <g:submitButton class="button-link" name="submitButton" value="View All" />
+            </div>
+        </g:form>
+    </div>
+    <div class="sliderControls">
+        <a href="#" id="hide">hide district selector</a>
+        <a href="#" id="show">show district selector</a>
+    </div>
 
-            <g:form  class="fancyForm" url="[controller:'usermanagement', action:'edituser']" id="filter" style="width:275px;">
-                <g:select name="district" class="dropdown" from="${districtList}" value="${selectedDistrict ? selectedDistrict : ''}" onchange="this.form.submit()" noSelection="${['':'Select a district']}"/>
-                <br/>
-                <br/>
-                <h1 class="featuredarticle title" style="padding-left:107.5px;">OR</h1>
-                <div style="padding-left:30px;" id="buttonContainer">
-                    <g:submitButton class="button-link" name="submitButton" value="View All" />
-                </div>
-            </g:form>
-        </div>
-        <div class="sliderControls">
-            <a href="#" id="hide">hide district selector</a>
-            <a href="#" id="show">show district selector</a>
-        </div>
-
-        <br/>
-        <br/>
+    <br/>
+    <br/>
 
         <!--<g:if test="${userMap && userMap.size == 0}">
             <h2>There are no users currently in this district</h2>
         </g:if>-->
 
-        <div class="wrapper" style="margin: 0 auto; width: 850px; display:block;">
-            <g:if test="${userMap}">
+    <div class="wrapper" style="margin: 0 auto; width: 850px; display:block;">
+        <g:if test="${userMap}">
 
-                <div class="leftColumn" style="width: 350px; float:left;">
+            <div class="leftColumn" style="width: 350px; float:left;">
 
-                    <g:form url="[controller:'usermanagement', action:'edituser']" id="userform" name="userform">
+                <g:form url="[controller:'usermanagement', action:'edituser']" id="userform" name="userform">
 
-                        <g:hiddenField name="usertable_username" id="usertable_username" value=""/>
-                        <g:hiddenField name="district" id="district" value="${selectedDistrict}"/>
-                        <table id="userTable" class="">
+                    <g:hiddenField name="usertable_username" id="usertable_username" value=""/>
+                    <g:hiddenField name="district" id="district" value="${selectedDistrict}"/>
+                    <table id="userTable" class="">
 
-                            <tr>
-                                <th>First</th>
-                                <th>Last</th>
-                                <th>Email</th>
+                        <tr>
+                            <th>First</th>
+                            <th>Last</th>
+                            <th>Email</th>
+                        </tr>
+
+                        <!-- counter used to do odd/even row coloring -->
+                        <g:def var="counter" value="${1}" /> 
+
+                        <g:each var="user" in="${userMap}">
+                            <tr id="${user.value.username.split('\\@')[0]}" onclick="submitUserTable(this);" class="${counter++ % 2 == 0 ? 'alt' : ''}" >
+                                <td id="firstName">${user.value.firstName}</td>
+                                <td id="lastName">${user.value.lastName}</td>
+                                <td id="email">${user.value.email}</td>
                             </tr>
-
-                            <!-- counter used to do odd/even row coloring -->
-                            <g:def var="counter" value="${1}" /> 
-
-                            <g:each var="user" in="${userMap}">
-                                <tr id="${user.value.username.split('\\@')[0]}" onclick="submitUserTable(this);" class="${counter++ % 2 == 0 ? 'alt' : ''}" >
-                                    <td id="firstName">${user.value.firstName}</td>
-                                    <td id="lastName">${user.value.lastName}</td>
-                                    <td id="email">${user.value.email}</td>
-                                </tr>
-                            </g:each>
-                        </table>
-                    </g:form>
-                </div>
-            </g:if>
+                        </g:each>
+                    </table>
+                </g:form>
+            </div>
+        </g:if>
         <g:if test="${selectedUser}">
             <div class="rightColumn" style="width: 400px; margin-left: 400px;">
                 <g:form class="fancyForm" url="[controller:'usermanagement', action:'edituser']" id="edit">
@@ -169,5 +164,4 @@
             $("#districtPicker").css("display","none");
         </script>
     </g:if>
-</body>
-</html>
+

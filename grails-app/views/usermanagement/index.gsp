@@ -6,7 +6,7 @@
 		        <title>Home</title>
 		    </head>
 		    <body>
-		        <g:link controller="usermanagement" action="groupassignment">Assign Pending Users to Groups</g:link>
+		       
 		    </body>
 		</crowdAuth:ifAllGranted>
     	<crowdAuth:ifAllNotGranted group="Admins">

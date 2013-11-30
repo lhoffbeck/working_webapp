@@ -1,4 +1,5 @@
-<html>
+ <!DOCTYPE html>
+ <html>
      <head>
          <title>Home</title>
          <q:javascript library='jquery' />
@@ -8,6 +9,16 @@
          <r:layoutResources/>
          <g:layoutHead />
          <style type="text/css">
+
+            html,body{
+                height: 100%;
+            }
+
+            #everything{
+                position: relative;
+                padding: 0 0 115px;
+                height: 100%;
+            }
 
             body { 
                 margin: 0px;
@@ -56,7 +67,7 @@
              }
 
              #topbar{
-                 position: absolute;
+                 position: fixed;
                  width:100%;
                  height:30px; 
                  background-color: #f0f0f0;
@@ -64,6 +75,7 @@
                  background-image:url(http://www.leveldatainc.com/templates/rt_diametric/images/overlays/patterns/textile.png); 
                  background-repeat:repeat;
                  display:block;
+                 z-index: 99;
              }
 
              #mainNav{
@@ -73,6 +85,7 @@
                  width: 890px;
                  margin: 0px auto;
                  padding: 0px 35px;
+                 z-index: 100;
             }
 
              #mainNav ul ul{
@@ -85,6 +98,7 @@
 
              #mainNav ul{
                  position: relative;
+                 float left;
                  height: 30px; 
                  color: #fff;
 
@@ -125,12 +139,18 @@
                  }
 
                  #mainNav ul li:hover{
-                     background:url(../images/333.png);
+                     background-color: #333;
+                     background-image:none;
                      z-index: 1;
+                     color:#fff;
                  }
 
                     #mainNav ul li:hover a{
                         color: #8cc13f;
+                    }
+
+                    #mainNav ul li:hover ul a{
+                        color:#fff;
                     }
 
                  #mainNav ul li a{
@@ -160,40 +180,53 @@
                     color: #8cc13f;
                 }
 
+
+             #mainNav #loginInfo{
+                 position: relative;
+                 float: left;
+                 margin: 0px 50px;
+                 top: -40px;
+                 height: 30px; 
+                 color: #fff;
+
+                 font-family: "NovecentowideNormal",Helvetica,Arial,sans-serif;
+                 font-size:12px;
+                 font-weight: normal;
+                 text-shadow: -1px -1px 1px #000;
+                 text-align: center;
+                 line-height: 30px;
+             }
+
+             #mainNav #loginInfo a{
+                color: #8cc13f;
+                text-decoration: none;
+             }
+
+
              #content{
                  position: absolute;
                  margin-top: 20px;
                  top:125px;
                  width:100%;
-             }
-
-             #footer{
-                 position: absolute;
-                 bottom: 0px;
-
-                 width: 100%;
-                 margin: 0 auto;
-             }
-             
+                 z-index: 0;
+             }             
 
              #foot{
                 background-color: #8BB757;
-                display: block;
-                background-image: url(${resource(dir:'images',file:'leather.png')});
+                
                 line-height: 1.6em;
                 font-size: 12px;
                 color:white;
                 text-shadow: -1px -1px 1px rgba(0,0,0,0.5);
 
+                width:100%;
                 text-align: center;
 
-                z-index:9999;
-
-                /*width:100%;
-                position: absolute;
-                height: 80px;
-                clear:both;
-                top:100%;*/
+                 position: absolute;
+                 bottom: 0px;
+                 width: 100%;
+                 margin: 0 auto;
+                 background-image: url(${resource(dir:'images',file:'leather.png')});
              }
 
              #foot a{
@@ -202,63 +235,57 @@
                 outline: none;
              }
 
-             #container {
-                height:auto;
-                width:100%;
-                border-collapse:collapse;
-                display : table;
-            }
-
-            .foot {
-                display : table-row;
-                vertical-align : bottom;
-                height : 1px;
-            }
-
          </style>
      </head>
      <body>
         <crowdAuth:isAuthenticated>
             <crowdAuth:ifAllGranted group="Admins">
-                 <div id="topBar"/>
-                     <div id="greenNav">
-                         <div id="innerBackNav">
-                             <div id="mainNav">
-                                <div id="logo">
-                                    <img src="/webportal/static/images/logo.png" />
-                                </div>
-                                <ul>
-                                    <li>
-                                        <a href="/webportal/usermanagement/index"> USER MANAGEMENT</a>
-                                        <ul>
-                                           <li><g:link controller="usermanagement" action="adduser">Add a User</g:link></li>
-                                           <li><g:link controller="usermanagement" action="edituser">Pending Users</g:link></li>
-                                       </ul>
-                                    </li>
-                                    <li>
-                                        <a href="/webportal/usermanagement/index"> REPORTS</a>
-                                    </li>
-                                    <li>
-                                        <a href="/webportal/usermanagement/index"> TESTING</a>
-                                    </li>
-                                </ul>
+                <div id="everything">
+                     <div id="topBar"/>
+                         <div id="greenNav">
+                             <div id="innerBackNav">
+                                 <div id="mainNav">
+                                    <div id="logo">
+                                        <img src="/webportal/static/images/logo.png" />
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <a href="/webportal/usermanagement/index"> USER MANAGEMENT</a>
+                                            <ul>
+                                               <li><g:link controller="usermanagement" action="adduser">Add a User</g:link></li>
+                                               <li><g:link controller="usermanagement" action="edituser">Edit Users</g:link></li>
+                                           </ul>
+                                        </li>
+                                        <li>
+                                            <a href="/webportal/usermanagement/index"> REPORTS</a>
+                                        </li>
+                                        <li>
+                                            <a href="/webportal/usermanagement/index"> TESTING</a>
+                                        </li>
+                                    </ul>
+                                    <div id = "loginInfo">
+                                         Hello, <crowdAuth:authenticatedUserInfo property="username"/><br/>
+                                         <g:link controller="logout">Sign Out</g:link>
+                                    </div>
+                                 </div>
+                                 
                              </div>
                          </div>
                      </div>
-                     <div id="backgroudGradient">
-                         <div id="content" style="padding-bottom:75px;">
-                            <g:layoutBody />
-                        </div>
+                     <div id="content" style="padding-bottom:75px;">
+                          <g:layoutBody />
+                     </div>
+                     <div id="foot">
+                        <g:render template="/common/footer" />
+                     </div> 
+                </div>
+            </crowdAuth:ifAllGranted>
+        </crowdAuth:isAuthenticated>
+        <crowdAuth:isNotAuthenticated>
+            <p>You do not have permission to view this page. Please <g:link controller="login">Login</g:link> or contact helpdesk@leveldatainc.com.</p>
+        </crowdAuth:isNotAuthenticated>
+        
 
-                </crowdAuth:ifAllGranted>
-            </crowdAuth:isAuthenticated>
-            <crowdAuth:isNotAuthenticated>
-                <p>You do not have permission to view this page. Please <g:link controller="login">Login</g:link> or contact helpdesk@leveldatainc.com.</p>
-            </crowdAuth:isNotAuthenticated>
 
-
-            <!--<div id="foot" class="foot">
-                <g:render template="/common/footer" />
-            </div>  <!--END #footer -->
      </body>
 </html>
