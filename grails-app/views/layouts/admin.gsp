@@ -48,16 +48,6 @@
                  height:60px;
              }
 
-             #mainNav
-             {
-                 position: relative;
-                 top: -12px;
-                 height: 60px;
-                 width: 890px;
-                 margin: 0px auto;
-                 padding: 0px 35px;
-
-             }
              #logo{
                  height: 153px;
                  width: 145px;
@@ -76,68 +66,99 @@
                  display:block;
              }
 
+             #mainNav{
+                 position: relative;
+                 top: -12px;
+                 height: 60px;
+                 width: 890px;
+                 margin: 0px auto;
+                 padding: 0px 35px;
+            }
+
+             #mainNav ul ul{
+                 display: none;
+            }
+
+                #mainNav ul li:hover > ul{
+                     display: block;
+                }
+
              #mainNav ul{
+                 position: relative;
+                 height: 30px; 
+                 color: #fff;
+
                  font-family: "NovecentowideNormal",Helvetica,Arial,sans-serif;
                  font-size:12px;
                  font-weight: normal;
-                 color: #fff;
                  text-shadow: -1px -1px 1px #000;
                  text-align: center;
                  list-style-type: none;
                  line-height: 30px;
-
                  text-transform: uppercase;
-
-                 height: 30px; 
-                 
-             }
-             #mainNav ul li{
-                 float: left;
-                 padding: 15px 20px;
-                 background-image:url(http://www.leveldatainc.com/templates/rt_diametric/images/overlays/dark/menu-separator.png);
-                 background-repeat:no-repeat;
-                 background-position: 0% 50%;
-
-                 transition: background-color 0.2s linear;
-                 transition-property: background-color;
-                 transition-duration: 0.2s;
-                 transition-timing-function: linear;
-                 transition-delay: initial;
-
-                 border-bottom-color: rgb(76, 74, 71);
-                border-bottom-style: none;
-                border-bottom-width: 0px;
-                border-image-outset: 0px;
-                border-image-repeat: stretch;
-                border-image-slice: 100%;
-                border-image-source: none;
-                border-image-width: 1;
-                border-left-color: rgba(0, 0, 0, 0);
-                border-left-style: solid;
-                border-left-width: 7px;
-                border-right-color: rgba(0, 0, 0, 0);
-                border-right-style: solid;
-                border-right-width: 7px;
-                border-top-color: rgb(137, 189, 61);
              }
 
-             #mainNav ul li:hover{
-                background-color: #333;
+             #mainNav ul #first{
+                 background-image: none;
              }
 
-             #mainNav ul li a{
-                 text-decoration: none;
-                 white-space: nowrap;
-                 cursor: pointer;
-                 z-index: 100;
-                 color: #fff;
-             }
+                 #mainNav ul:after {
+                     clear:both;
+                     display:block;
+                 }
+
+                  #mainNav ul li{
+                     float: left;
+                     padding: 15px 20px;
+                     margin: 0px -2px;
+
+                     background-image:url(http://www.leveldatainc.com/templates/rt_diametric/images/overlays/dark/menu-separator.png);
+                     background-repeat:no-repeat;
+                     background-position: 0% 50%;
+                     background-position: 100% 50%;
+
+                     transition: background-image 0.2s linear;
+                     transition-property: background-color;
+                     transition-duration: 0.2s;
+                     transition-timing-function: linear;
+                     transition-delay: initial;
+                 }
+
+                 #mainNav ul li:hover{
+                     background:url(../images/333.png);
+                     z-index: 1;
+                 }
+
+                    #mainNav ul li:hover a{
+                        color: #8cc13f;
+                    }
+
+                 #mainNav ul li a{
+                     color: #fff;
+                     display: block; 
+                     text-decoration: none;
+                     cursor: pointer;
+                 }
 
              #mainNav ul ul{
-                display: none;
+                 position: absolute;
+                 height: 100%
              }
 
-           
+             #mainNav ul ul li{
+                 position: relative;
+                 float:none;
+                 background-image:none; 
+                 background-color: #333;
+             }
+                 #mainNav ul ul li a{
+                     color: #fff;
+                     cursor: pointer;
+                 }
+
+                #mainNav ul ul li a:hover {
+                    color: #8cc13f;
+                }
 
              #content{
                  position: absolute;
@@ -197,29 +218,30 @@
          </style>
      </head>
      <body>
-        <div id="container">
-            <crowdAuth:isAuthenticated>
-                <crowdAuth:ifAllGranted group="Admins">
-                     <div id="topBar"/>
-                         <div id="greenNav">
-                             <div id="innerBackNav">
-                                 <div id="mainNav">
-                                    <div id="logo">
-                                        <img src="/webportal/static/images/logo.png" />
-                                    </div>
-                                    <ul>
-                                        <li id="userManagement">
-                                            <a href="/webportal/usermanagement/index" style="color:white;"> USER MANAGEMENT</a>
-                                            <ul>
-                                               <li><g:link controller="usermanagement" action="adduser">Add a User</g:link></li>
-                                               <li><g:link controller="usermanagement" action="edituser">Pending Users</g:link></li>
-                                           </ul>
-                                        </li>
-                                        <li id="reports">
-                                            <a href="/webportal/usermanagement/index" style="color:white;"> REPORTS</a>
-                                        </li>
-                                    </ul>
-                                 </div>
+        <crowdAuth:isAuthenticated>
+            <crowdAuth:ifAllGranted group="Admins">
+                 <div id="topBar"/>
+                     <div id="greenNav">
+                         <div id="innerBackNav">
+                             <div id="mainNav">
+                                <div id="logo">
+                                    <img src="/webportal/static/images/logo.png" />
+                                </div>
+                                <ul>
+                                    <li>
+                                        <a href="/webportal/usermanagement/index"> USER MANAGEMENT</a>
+                                        <ul>
+                                           <li><g:link controller="usermanagement" action="adduser">Add a User</g:link></li>
+                                           <li><g:link controller="usermanagement" action="edituser">Pending Users</g:link></li>
+                                       </ul>
+                                    </li>
+                                    <li>
+                                        <a href="/webportal/usermanagement/index"> REPORTS</a>
+                                    </li>
+                                    <li>
+                                        <a href="/webportal/usermanagement/index"> TESTING</a>
+                                    </li>
+                                </ul>
                              </div>
                          </div>
                      </div>
@@ -238,6 +260,5 @@
             <!--<div id="foot" class="foot">
                 <g:render template="/common/footer" />
             </div>  <!--END #footer -->
-        </div>
      </body>
 </html>
