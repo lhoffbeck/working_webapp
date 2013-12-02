@@ -1,8 +1,13 @@
 package webportal
 
+import org.codehaus.grails.plugins.crowd.util.CrowdAuthUtils
+
+
 class UsermanagementController {
 
-    def index(){ }
+    def index(){
+        print CrowdAuthUtils.isAuthenticated(request)
+    }
 
     def groupassignment(){
 

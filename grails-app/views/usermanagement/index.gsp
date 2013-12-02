@@ -16,8 +16,6 @@
 		</crowdAuth:ifAllNotGranted>
     </crowdAuth:isAuthenticated>
     <crowdAuth:isNotAuthenticated>
-    	<body>
-		    You must logged in to access this page.
-		</body>
+    	
     </crowdAuth:isNotAuthenticated>
 </html>

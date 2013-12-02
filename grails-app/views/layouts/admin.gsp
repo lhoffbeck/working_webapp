@@ -63,7 +63,7 @@
                  height: 153px;
                  width: 145px;
                  float:left;
-                 margin: -37 5 -60 8;
+                 margin: -37px 5px -60px 8px;
              }
 
              #topbar{
@@ -75,7 +75,7 @@
                  background-image:url(http://www.leveldatainc.com/templates/rt_diametric/images/overlays/patterns/textile.png); 
                  background-repeat:repeat;
                  display:block;
-                 z-index: 99;
+                 z-index: 100;
              }
 
              #mainNav{
@@ -85,7 +85,6 @@
                  width: 890px;
                  margin: 0px auto;
                  padding: 0px 35px;
-                 z-index: 100;
             }
 
              #mainNav ul ul{
@@ -241,7 +240,7 @@
         <crowdAuth:isAuthenticated>
             <crowdAuth:ifAllGranted group="Admins">
                 <div id="everything">
-                     <div id="topBar"/>
+                     <div id="topbar">
                          <div id="greenNav">
                              <div id="innerBackNav">
                                  <div id="mainNav">
