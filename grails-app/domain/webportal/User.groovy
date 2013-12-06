@@ -32,10 +32,10 @@ class User {
  
     // constraints that get checked when the object is getting pushed to the database (doesn't happen here... need a way to check without pushing.)
     static constraints = {
-        firstName blank:false
-        lastName  blank:false
-        username  blank:false, size:5..22, matches:/[\S]+/, unique:true
-        password  blank:false, size:5..15, matches:/[\S]+/, validator:{ val, obj ->
+        firstName blank: false
+        lastName  blank: false
+        username  blank: false, size:5..22, matches:/[\S]+/, unique:true
+        password  blank: false, size:5..15, matches:/[\S]+/, validator:{ val, obj ->
         if (obj.password != obj.confirm)
             return 'user.password.dontmatch'
         }
