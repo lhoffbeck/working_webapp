@@ -39,7 +39,7 @@
     <br/>
     <br/>
     <g:if test="${ flash.message }" >
-        <div id="successMessage">${ flash.message }</div>
+        <div id="successMessage" style="margin: 5px;">${ flash.message }</div>
     </g:if>
     <h1 class="featuredarticle title" style="text-align:center;">Edit<span> a user account</span> </h1><br/>
 

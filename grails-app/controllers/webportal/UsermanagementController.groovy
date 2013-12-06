@@ -105,15 +105,21 @@ class UsermanagementController {
             def selectedDistrict
 
             // If the submit was caused by the dropdown change
-            if(params.district && params.submitButton != 'View All' && !params.usertable_username)
+            if(params.district && params.submitButton != 'View All' && !params.usertable_username && params.submitButton != 'Save')
             {
+                System.err.println("inside view district")
+                
                 return [districtList: districtList, userMap: getUserMap(params, dao), selectedDistrict: params.district]
             }
             else if(params.submitButton == 'View All')
             {
+                System.err.println("inside view all")
+
                 return [districtList: districtList, userMap: getUserMap(params, dao), selectedDistrict: '']
             }
             else if(params.usertable_username){
+
+                System.err.println("inside usertable")
 
                 //throw new RuntimeException(userList.dump())
 
@@ -130,6 +136,8 @@ class UsermanagementController {
             } // end else if this is response to click on user
             else if(params.submitButton == 'Save')
             {
+
+                System.err.println("inside save")
 
                 //############################### update user information
                 def user = new User()
@@ -170,12 +178,13 @@ class UsermanagementController {
                     } 
                 }
                 params.each{ key, value ->
+
                     if(key ==~ /^perm.*$/){
                         def permName = key.replace('perm','').replace('_',' ')
                         
                         // if a new permission was added, add it.
                         if(value == 'on' && !oldPerms.contains(permName)){
-                            "adding permission $permName"
+                            println "adding permission $permName"
                             dao.addUserToGroup(params.userName,key.replace("perm","").replace("_"," "))
                         }
                     }
