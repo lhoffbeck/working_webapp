@@ -245,7 +245,7 @@
                              <div id="innerBackNav">
                                  <div id="mainNav">
                                     <div id="logo">
-                                        <img src="/webportal/static/images/logo.png" />
+                                        <img src="${resource(dir:'images',file:'logo.png')}" />
                                     </div>
                                     <ul>
                                         <li>

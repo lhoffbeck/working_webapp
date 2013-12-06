@@ -2,7 +2,7 @@
 	<crowdAuth:isAuthenticated>
 	    <crowdAuth:ifAllGranted group="Admins">
 		    <head>
-		        <meta name="layout" content="Admin"/> 
+		        <meta name="layout" content="admin"/> 
 		        <title>Home</title>
 		    </head>
 		    <body>
