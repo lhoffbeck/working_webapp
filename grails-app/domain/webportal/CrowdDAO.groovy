@@ -66,6 +66,32 @@ class CrowdDAO {
     }
   }
 
+   def removeUser(User u){
+
+    HTTPBuilder builder = new HTTPBuilder( "${baseURL}/user?username=${u.username}" )
+
+    builder.auth.basic appUser,appPas
+
+    builder.request(DELETE){  
+
+      response.success = { resp, xmlText -> 
+
+          assert resp.status == 204
+          
+          println "request succeeded"
+
+          return true
+      }
+           
+      response.failure = { resp ->
+          println 'request failed: ' + resp.status
+          assert resp.status >= 400
+
+          return false
+      }
+    }
+  }
+
   def updateUser(User u){
     String xml = """
       <user name='${u.username}' expand='attributes'>

@@ -8,22 +8,29 @@ import org.junit.*
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
+        
 @TestFor(CrowdDAO)
 class CrowdDAOTests {
 
     def dao = new CrowdDAO()
-
     def userValues = [username: 'unittest@leveldatainc.com', firstName: 'unit', lastName:'test', email:'unittest@leveldatainc.com', password:'test123']
     def user = new User(userValues)
 
+@Before
     void testCreateUser() {
-        
+       def success = dao.createUser(user)
+        if (!success)
+        {
+        } 
+    }
 
-    	def success = dao.createUser(user)
-       	if (!success)
-       	{
-       		fail 'Unable to create user'
-       	}
+@After
+    void testDeleteUser() {
+        def success = dao.removeUser(user)
+        if (!success)
+        {
+        }
+        
     }
 
     void testUpdateUser() {
@@ -70,6 +77,7 @@ class CrowdDAOTests {
 
 
     void testGetAllUsersInGroup() {
+        dao.addUserToGroup(user.username, 'Notifications')
         def success = dao.getAllUsersInGroup('Notifications')
         if (success.size() < 1)
         {
@@ -78,6 +86,7 @@ class CrowdDAOTests {
     }
 
     void testgetAllUsersInNestedGroup() {
+        dao.addUserToGroup(user.username, 'Notifications')
         def success = dao.getAllUsersInNestedGroup('Notifications')
         if (success.size() < 1)
         {
@@ -86,21 +95,31 @@ class CrowdDAOTests {
     }
 
     void testGetUserGroupInfo() {
-
-        def success = dao.removeUserFromGroup(user)
-        if (!success.contains('Notifications'))
+        dao.addUserToGroup(user.username, 'Notifications')
+        def success = dao.getUserGroupInfo(user)
+        if (success ==~ /Notifications/)
         {
             fail 'Unable to get user group info'
+     
         }
     }
+/*
+    void testGetUserAttributes() {
 
+        def success = dao.getUserAttributes(user.username)
+        if (!success)
+        {
+            fail 'Unable to get user attributes'
+     
+        }
+    }
+*/
      void testRemoveUserFromGroup() {
-
+        dao.addUserToGroup(user.username, 'Notifications')
         def success = dao.removeUserFromGroup(user.username, 'Notifications')
         if (!success)
         {
             fail 'Unable to remove user from group'
         }
     }
-
 }
