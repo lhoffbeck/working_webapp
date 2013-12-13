@@ -11,7 +11,7 @@ import org.junit.*
 @TestFor(UserController)
 class UserControllerTests {
 
-    void testSomething() {
-       fail "Implement me"
+ void testIndex() {
     }
+
 }

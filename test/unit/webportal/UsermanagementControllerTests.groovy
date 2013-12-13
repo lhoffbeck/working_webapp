@@ -10,8 +10,6 @@ import org.junit.*
  */
 @TestFor(UsermanagementController)
 class UsermanagementControllerTests {
-
-    void testSomething() {
-       fail "Implement me"
+ 	void testIndex() {
     }
 }
